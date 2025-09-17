@@ -9,7 +9,7 @@ on:
 # Ton projet est dans un sous-dossier :
 defaults:
   run:
-    working-directory: EcoRideBetaApp
+    working-directory: EcoRideBeta
 
 jobs:
   tests:
