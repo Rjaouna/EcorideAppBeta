@@ -6,6 +6,11 @@
 			{% block title %}Admin
 			{% endblock %}
 		</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+
+
 
 <link rel="stylesheet" href="{{ asset('build/app.css') }}">
 
@@ -18,16 +23,16 @@
 	</head>
 	<body>
 	{{ include('front/_partials/_nav/_nav.html.twig') }}
-	<div class="container">
+	<div class="container my-5">
 		{% block body %}{% endblock %}
 	</div>
 		{% block javascripts %}
 
  <script src="/assets/js/app.js"></script>
-
-
-
 		{% endblock %}
+{{ include('front/_partials/_footer/_footer.html.twig') }}
+
+
 	</body>
 </html>
 
