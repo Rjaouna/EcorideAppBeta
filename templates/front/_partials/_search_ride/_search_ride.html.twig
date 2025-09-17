@@ -1,0 +1,106 @@
+<div class="container bg-light text-white py-4 mt-3 rounded-4 shadow-sm">
+  <form method="get" action="#">
+    <div class="text-center mb-3">
+      <h3 class="mb-0 text-secondary">Passager ? Trouvez un covoiturage</h3>
+    </div>
+
+    <div class="row g-2 g-md-3 align-items-end">
+      {# Départ #}
+      <div class="col-12 col-md-3">
+        <div class="input-group input-group-lg">
+          <span class="input-group-text rounded-start-pill bg-secondary text-white"><i class="bi bi-geo-alt"></i></span>
+          <input
+            type="text"
+            id="departureCity"
+            name="depart"
+            class="form-control rounded-end-pill"
+            placeholder="Départ : Paris, Lille…"
+            required
+            value="{{ depart|default('') }}"
+          >
+        </div>
+      </div>
+
+      {# Swap #}
+      <div class="col-12 col-md-auto d-flex justify-content-center">
+        <button type="button" id="swap"
+                class="btn btn-light btn-lg rounded-circle shadow-sm mt-1 mt-md-0"
+                title="Permuter Départ / Arrivée"
+                style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;">
+          <i class="bi bi-arrow-left-right"></i>
+        </button>
+      </div>
+
+      {# Arrivée #}
+      <div class="col-12 col-md-3">
+        <div class="input-group input-group-lg">
+<span class="input-group-text rounded-start-pill bg-secondary text-white">
+	<i class="bi bi-flag"></i>
+</span>
+
+          <input
+            type="text"
+            id="destinationCity"
+            name="arrivee"
+            class="form-control rounded-end-pill"
+            placeholder="Arrivée : Marseille, Lyon…"
+            required
+            value="{{ arrivee|default('') }}"
+          >
+        </div>
+      </div>
+
+      {# Date #}
+      <div class="col-6 col-md-3">
+        <div class="input-group input-group-lg">
+<span class="input-group-text rounded-start-pill bg-secondary text-white">
+	<i class="bi bi-calendar-event"></i>
+</span>
+
+          <input
+            type="date"
+            id="travelDate"
+            name="departAt"
+            class="form-control rounded-end-pill"
+            value="{{ departAt|default('') }}"
+          >
+        </div>
+      </div>
+
+      {# Rechercher #}
+      <div class="col-6 col-md-2 d-grid">
+        <label class="form-label mb-1 invisible">Rechercher</label>
+        <button type="submit" class="btn btn-primary btn-lg rounded-pill text-white">
+          <i class="bi bi-search me-1"></i> Rechercher
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+(() => {
+  const dep  = document.getElementById('departureCity');
+  const dest = document.getElementById('destinationCity');
+  const swapBtn = document.getElementById('swap');
+
+  swapBtn?.addEventListener('click', () => {
+    const tmp = dep.value;
+    dep.value = dest.value;
+    dest.value = tmp;
+    dep.focus();
+  });
+
+  // Optionnel : min = aujourd'hui
+  const d = document.getElementById('travelDate');
+  if (d && !d.value) d.min = new Date().toISOString().split('T')[0];
+})();
+</script>
+
+<style>
+/* Ajuste légèrement la taille en très petit écran */
+@media (max-width: 575.98px){
+  .input-group.input-group-lg .form-control,
+  .input-group.input-group-lg .input-group-text{ font-size: 1rem; }
+}
+</style>
