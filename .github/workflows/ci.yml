@@ -6,27 +6,54 @@ on:
   pull_request:
     branches: [ "dev", "main" ]
 
-# Ton projet est dans un sous-dossier :
-defaults:
-  run:
-    working-directory: EcoRideBeta
-
 jobs:
   tests:
     runs-on: ubuntu-latest
     env:
       APP_ENV: test
-      # SQLite = pas de serveur DB à lancer
       DATABASE_URL: "sqlite:///%kernel.project_dir%/var/test.db"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Detect project root (auto)
+        id: detect
+        shell: bash
+        run: |
+          set -e
+          echo "PWD:"
+          pwd
+          echo "Repo content:"
+          ls -la
+          # 1) Root
+          if [ -f composer.json ]; then
+            echo "ROOT=." >> $GITHUB_ENV
+            echo "✅ Project at repo root"
+            exit 0
+          fi
+          # 2) Common subfolders to try
+          for d in EcoRideBeta EcoRideBetaApp app backend symfony; do
+            if [ -f "$d/composer.json" ]; then
+              echo "ROOT=$d" >> $GITHUB_ENV
+              echo "✅ Project in $d/"
+              exit 0
+            fi
+          done
+          # 3) Generic search (first composer.json tracked by git)
+          found="$(git ls-files | grep -E '(^|/)(composer\.json)$' | head -n1 | xargs dirname)"
+          if [ -n "$found" ] && [ -f "$found/composer.json" ]; then
+            echo "ROOT=$found" >> $GITHUB_ENV
+            echo "✅ Project in $found/"
+            exit 0
+          fi
+          echo "❌ composer.json introuvable (ni à la racine, ni dans sous-dossiers connus)."
+          exit 1
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'              # ← important : 8.3 pour PHPUnit 12
+          php-version: '8.3'                 # PHPUnit 12 exige PHP >= 8.3
           extensions: mbstring, intl, pdo_sqlite
           tools: composer:v2
           coverage: none
@@ -39,20 +66,24 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install deps
+        working-directory: ${{ env.ROOT }}
         run: composer install --no-interaction --prefer-dist
 
-      # ⚠️ on ne copie PAS .env.test → .env.local (inutile/risqué en CI)
       - name: Prepare schema (SQLite)
+        working-directory: ${{ env.ROOT }}
         run: |
           php bin/console doctrine:schema:drop --env=test --force --full-database || true
           php bin/console doctrine:schema:create --env=test
           php bin/console doctrine:fixtures:load --env=test -n || true
 
       - name: Run PHPUnit
+        working-directory: ${{ env.ROOT }}
         run: php bin/phpunit --testdox
 
       - name: PHPStan
+        working-directory: ${{ env.ROOT }}
         run: vendor/bin/phpstan analyse src --level=max
 
       - name: PHP-CS-Fixer (dry-run)
+        working-directory: ${{ env.ROOT }}
         run: vendor/bin/php-cs-fixer fix --dry-run --diff || true
