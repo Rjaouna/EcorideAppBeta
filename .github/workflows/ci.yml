@@ -6,9 +6,18 @@ on:
   pull_request:
     branches: [ "dev", "main" ]
 
+# Ton projet est dans un sous-dossier :
+defaults:
+  run:
+    working-directory: EcoRideBetaApp
+
 jobs:
   tests:
     runs-on: ubuntu-latest
+    env:
+      APP_ENV: test
+      # SQLite = pas de serveur DB à lancer
+      DATABASE_URL: "sqlite:///%kernel.project_dir%/var/test.db"
 
     steps:
       - name: Checkout
@@ -17,7 +26,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'              # ← important : 8.3 pour PHPUnit 12
           extensions: mbstring, intl, pdo_sqlite
           tools: composer:v2
           coverage: none
@@ -32,11 +41,11 @@ jobs:
       - name: Install deps
         run: composer install --no-interaction --prefer-dist
 
-      - name: Prepare test env (SQLite)
+      # ⚠️ on ne copie PAS .env.test → .env.local (inutile/risqué en CI)
+      - name: Prepare schema (SQLite)
         run: |
-          cp .env.test .env.local || true
-          php bin/console doctrine:database:create --env=test --if-not-exists
-          php bin/console doctrine:schema:update --env=test --force
+          php bin/console doctrine:schema:drop --env=test --force --full-database || true
+          php bin/console doctrine:schema:create --env=test
           php bin/console doctrine:fixtures:load --env=test -n || true
 
       - name: Run PHPUnit
