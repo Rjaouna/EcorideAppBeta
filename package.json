@@ -4,12 +4,17 @@
     "esbuild": "^0.25.9",
     "sass": "^1.92.1"
   },
-   "scripts": {
+  "scripts": {
     "watch:css": "sass assets/styles/app.scss public/assets/css/app.css --watch",
-    "build:css": "sass assets/styles/app.scss public/assets/css/app.css --style=compressed",
     "watch:js": "esbuild assets/js/app.js --bundle --outfile=public/assets/js/app.js --sourcemap --watch",
-    "build:js": "esbuild assets/js/app.js --bundle --outfile=public/assets/js/app.js --minify",
     "dev": "npm-run-all --parallel watch:css watch:js",
-    "build": "npm run build:css && npm run build:js"
+    "build": "npm run build:css",
+    "build:css": "sass assets/styles/app.scss public/assets/css/app.css --style=compressed --load-path=node_modules",
+    "build:js": "vite build"
+    
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "axios": "^1.12.2"
   }
 }

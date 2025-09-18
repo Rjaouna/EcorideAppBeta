@@ -80,8 +80,10 @@
 				<div class="row no-gutters align-items-center">
 					<div class="col mr-2">
 						<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-							Pending Requests</div>
-						<div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+							Comptes bloquée</div>
+<div class="h5 mb-0 font-weight-bold text-gray-800" id="userCount" data-endpoint="{{ path('admin_api_user_count') }}">0</div>
+
+
 					</div>
 					<div class="col-auto">
 						<i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -91,3 +93,33 @@
 		</div>
 	</div>
 </div>
+ <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<script>
+
+function loadUserCount() {
+  const el = document.getElementById('userCount');
+  if (!el) return;
+
+  const url = el.getAttribute('data-endpoint');
+
+  axios.get(url, {
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(({ data }) => {
+    el.textContent = typeof data.count === 'number' ? data.count : '0';
+  })
+  .catch(err => {
+    console.error('User count error:', err);
+    el.textContent = '—';
+    el.title = 'Impossible de récupérer le compteur';
+  });
+}
+
+document.addEventListener("DOMContentLoaded", loadUserCount());
+
+
+
+
+</script>
