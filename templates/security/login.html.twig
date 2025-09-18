@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+	<div class="container  d-flex align-items-center py-5">
+		<div class="row justify-content-center w-100">
+			<div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+				<div class="card border-0 shadow-sm rounded-4">
+					<div
+						class="card-body p-4 p-md-5">
+
+						<!-- En-tête -->
+						<div class="text-center mb-4">
+							<h1 class="h4 mb-0 text-secondary">Connexion</h1>
+						</div>
+
+						<!-- Erreur -->
+						{% if error %}
+							<div class="alert alert-danger d-flex align-items-start gap-2" role="alert">
+								<i class="bi bi-exclamation-triangle-fill"></i>
+								<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+							</div>
+						{% endif %}
+
+						<!-- Déjà connecté -->
+						{% if app.user %}
+							<div class="alert alert-info d-flex justify-content-between align-items-center" role="status">
+								<div>
+									Connecté en tant que
+									<strong>{{ app.user.userIdentifier }}</strong>
+								</div>
+								<a class="btn btn-sm btn-outline-dark" href="{{ path('app_logout') }}">Se déconnecter</a>
+							</div>
+						{% endif %}
+
+						<!-- Formulaire -->
+						<form method="post" novalidate>
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+							<div class="mb-3">
+								<label for="inputEmail" class="form-label">Adresse e-mail</label>
+								<div class="input-group">
+									<span class="input-group-text">
+										<i class="bi bi-envelope"></i>
+									</span>
+									<input type="email" class="form-control" id="inputEmail" name="email" value="{{ last_username }}" autocomplete="email" required placeholder="vous@exemple.com">
+								</div>
+							</div>
+
+							<div class="mb-2">
+								<label for="inputPassword" class="form-label d-flex justify-content-between">
+									<span>Mot de passe</span>
+									<a href="#" class="small text-decoration-none">Mot de passe oublié ?</a>
+								</label>
+								<div class="input-group">
+									<span class="input-group-text">
+										<i class="bi bi-lock"></i>
+									</span>
+									<input type="password" class="form-control" id="inputPassword" name="password" autocomplete="current-password" required placeholder="Votre mot de passe">
+								</div>
+							</div>
+
+							<div class="d-flex justify-content-between align-items-center mb-3">
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="on" id="rememberMe" name="_remember_me">
+									<label class="form-check-label" for="rememberMe">
+										Se souvenir de moi
+									</label>
+								</div>
+								<!-- Espace réservé à un lien “Créer un compte” si besoin -->
+								<a href="#" class="small text-decoration-none">
+									Créer un compte
+								</a>
+							</div>
+
+							<button class="btn btn-primary text-light w-100 btn-lg rounded-pill btn-sm" type="submit">
+								<i class="bi bi-box-arrow-in-right me-1"></i>
+								Se connecter
+							</button>
+						</form>
+
+						
+						
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+
