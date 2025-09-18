@@ -2,24 +2,46 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width"/>
+
 		<title>
 			{% block title %}Admin
 			{% endblock %}
 		</title>
-{# base.html.twig #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+
+
 <link rel="stylesheet" href="{{ asset('build/app.css') }}">
- <script defer src="{{ asset('build/runtime.js') }}"></script>
- <script defer src="{{ asset('build/app.js') }}"></script>
+
+
+
 
 
 		{% block stylesheets %}
 		{% endblock %}
 	</head>
 	<body>
-		{% block body %}{% endblock %}
+{{ include('front/_partials/_nav/_nav.html.twig') }}
 
+
+
+<div class="container my-2">
+
+
+		{% block body %}{% endblock %}
+	</div>
 		{% block javascripts %}
+
+ <script src="/assets/js/app.js"></script>
 		{% endblock %}
+{{ include('front/_partials/_footer/_footer.html.twig') }}
+
+
 	</body>
 </html>
 
