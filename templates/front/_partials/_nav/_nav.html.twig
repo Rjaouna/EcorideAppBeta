@@ -74,61 +74,86 @@
 				</li>
 {% endif %}
 
+{# --- Compte (droite navbar) --- #}
+<li class="nav-item dropdown ms-md-2">
+
+	{% if app.user %}
+		{# ==== CONNECTÉ ==== #}
+		{% set pseudo    = app.user.pseudo ?? (app.user.email|split('@')[0]) %}
+		{% set initial   = (pseudo|slice(0,1)|upper) %}
+		{% set isDriver  = 'ROLE_DRIVER' in app.user.roles %}
+		{% set modeLabel = isDriver ? 'Conducteur' : 'Passager' %}
+		{% set modeBadge = isDriver ? 'success' : 'primary' %}
+
+		<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navAccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+			<span class="rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width:28px;height:28px;background:rgba(0,0,0,.08);">
+				<strong class="small">{{ initial }}</strong>
+			</span>
+			<span class="d-none d-lg-inline">{{ pseudo }}</span>
+		</a>
+
+		<div class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navAccount" style="min-width: 260px;">
+			<div class="px-3 py-2 small">
+				<div class="fw-semibold">{{ pseudo }}</div>
+				<div class="text-muted">Mode :
+					<span class="badge bg-{{ modeBadge }}">{{ modeLabel }}</span>
+				</div>
+			</div>
+
+			<div class="dropdown-divider"></div>
+
+			<a class="dropdown-item" href="#">
+				<i class="bi bi-person-circle me-2"></i>
+				Mon profil
+			</a>
+			<a class="dropdown-item" href="#">
+				<i class="bi bi-sliders2 me-2"></i>
+				Mes préférences
+			</a>
+
+			{% if isDriver %}
+				<a class="dropdown-item" href="{{ path('app_couvoiturage_index') }}">
+					<i class="bi bi-calendar2-event me-2"></i>
+					Mes covoiturages
+				</a>
+				<a class="dropdown-item" href="{{ path('app_couvoiturage_new') }}">
+					<i class="bi bi-plus-circle me-2"></i>
+					Publier un trajet
+				</a>
+			{% endif %}
+
+			<div class="dropdown-divider"></div>
+
+			<a class="dropdown-item text-danger" href="{{ path('app_logout') }}">
+				<i class="bi bi-box-arrow-right me-2"></i>
+				Déconnexion
+			</a>
+		</div>
+
+	{% else %}
+		{# ==== NON CONNECTÉ ==== #}
+		<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navAccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+			<i class="bi bi-person-circle me-2"></i>
+			<span class="d-none d-lg-inline">Mon compte</span>
+		</a>
+
+		<div class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navAccount">
+			<a class="dropdown-item" href="{{ path('app_login') }}">
+				<i class="bi bi-box-arrow-in-right me-2"></i>
+				Connexion
+			</a>
+			<a class="dropdown-item" href="{{ path('app_register') }}">
+				<i class="bi bi-person-plus me-2"></i>
+				Créer un compte
+			</a>
+		</div>
+	{% endif %}
+
+</li>
 
 
-				{# Compte statique #}
-				<li class="nav-item dropdown ms-md-2">
-					<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navAccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						<span class="rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width:28px;height:28px;background:rgba(0,0,0,.08);">
-							<strong class="small">A</strong>
-						</span>
-						<span class="d-none d-lg-inline">alex</span>
-					</a>
 
-					<div class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navAccount" style="min-width: 260px;">
-						<div class="px-3 py-2 small">
-							<div class="fw-semibold">alex</div>
-							<div class="text-muted">Mode :
-								<span class="badge bg-success">Conducteur</span>
-							</div>
-						</div>
-						<div class="dropdown-divider"></div>
-
-						<a class="dropdown-item" href="#">
-							<i class="bi bi-person-circle me-2"></i>
-							Mon profil</a>
-						<a class="dropdown-item" href="#">
-							<i class="bi bi-sliders2 me-2"></i>
-							Mes préférences</a>
-						<a class="dropdown-item" href="#">
-							<i class="bi bi-calendar2-event me-2"></i>
-							Mes covoiturages</a>
-						<a class="dropdown-item" href="#">
-							<i class="bi bi-plus-circle me-2"></i>
-							Publier un trajet</a>
-
-						<div class="dropdown-divider"></div>
-
-						<button type="button" class="dropdown-item d-flex align-items-center">
-							<i class="bi bi-person me-2"></i>
-							Passer en mode Passager
-						</button>
-
-						<div class="dropdown-divider"></div>
-
-						{% if app.user %}
-							
-						<a class="dropdown-item text-danger" href="#">
-							<i class="bi bi-box-arrow-right me-2"></i>
-							Déconnexion</a>{% else %}
-						<a class="dropdown-item text-primary" href="{{ path('app_login') }}">
-<i class="bi bi-box-arrow-in-right me-2"></i>Connexion</a>
-
-							{% endif %}
-
-
-					</div>
-				</li>
+				
 			</ul>
 		</div>
 	</div>

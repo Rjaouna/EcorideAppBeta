@@ -1,0 +1,108 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+	<div
+		class="container-fluid py-4">
+
+		{# En-tête : Titre + actions #}
+		<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 mx-2">
+			<h1 class="h4 mb-0">Liste des utilisateurs</h1>
+			<div class="d-flex gap-2">
+				<a href="{{ path('app_user_new') }}" class="btn btn-primary text-white">
+					<i class="bi bi-person-plus"></i>
+					Ajouter un utilisateur
+				</a>
+			
+			</div>
+		</div>
+
+		<div class="card border-0 shadow-sm rounded-4">
+			<div class="card-body p-0">
+				<div class="table-responsive">
+					<table class="table table-hover align-middle mb-0">
+						<thead class="table-light">
+							<tr>
+								<th class="text-nowrap">#</th>
+								<th>Email</th>
+								<th class="text-nowrap">Rôles</th>
+								<th class="text-nowrap">Prénom</th>
+								<th class="text-nowrap">Nom</th>
+								<th class="text-nowrap">Téléphone</th>
+								<th>Adresse</th>
+								<th class="text-nowrap">Naissance</th>
+								<th class="text-nowrap">Pseudo</th>
+								<th class="text-nowrap">Email vérification</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% set labels = {
+            'ROLE_SUPER_ADMIN': 'Super Admin',
+            'ROLE_ADMIN':       'Admin',
+            'ROLE_MANAGER':     'Manager',
+            'ROLE_DRIVER':      'Driver',
+            'ROLE_PASSAGER':    'Passager',
+            'ROLE_USER':        'Utilisateur'
+          } %}
+
+							{% for user in users %}
+								<tr>
+									<td class="text-muted">{{ user.id }}</td>
+									<td>
+<a href="{{ path('app_user_show', {'id': user.id}) }}" class="text-decoration-none">{{ user.email }}</a>
+
+									</td>
+									<td class="text-nowrap">
+										{% for r in user.roles %}
+											{% set badge =
+                    r == 'ROLE_SUPER_ADMIN' ? 'danger' :
+                    (r == 'ROLE_ADMIN' ? 'primary' :
+                    (r == 'ROLE_MANAGER' ? 'info' :
+                    (r == 'ROLE_DRIVER' ? 'success' :
+                    (r == 'ROLE_PASSAGER' ? 'secondary' : 'light')))) %}
+											<span class="badge bg-{{ badge }} me-1 mb-1">{{ labels[r]|default(r) }}</span>
+										{% endfor %}
+									</td>
+									<td>{{ user.firstName }}</td>
+									<td>{{ user.lastName }}</td>
+									<td>
+										{% if user.phone %}
+											<a href="tel:{{ user.phone }}" class="text-decoration-none">{{ user.phone }}</a>
+											{% else %}—
+										{% endif %}
+									</td>
+									<td class="text-truncate" style="max-width: 220px;">
+										{{ user.address ?? '—' }}
+									</td>
+									<td class="text-nowrap">
+										{{ user.dateOfBirthAt ? user.dateOfBirthAt|date('d/m/Y') : '—' }}
+									</td>
+									<td>{{ user.pseudo ?? '—' }}</td>
+									<td>
+										{% if user.isVerified %}
+											<span class="badge bg-success">
+												<i class="bi bi-check2"></i>
+											</span>
+										{% else %}
+											<span class="badge bg-warning text-dark">
+												<i class="bi bi-exclamation"></i>
+											</span>
+										{% endif %}
+									</td>
+								
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="11" class="text-center text-muted py-4">Aucun utilisateur trouvé.</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}
+

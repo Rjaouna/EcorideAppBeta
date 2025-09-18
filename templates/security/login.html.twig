@@ -5,7 +5,7 @@
 {% block body %}
 	<div class="container  d-flex align-items-center py-5">
 		<div class="row justify-content-center w-100">
-			<div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+			<div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-6">
 				<div class="card border-0 shadow-sm rounded-4">
 					<div
 						class="card-body p-4 p-md-5">
@@ -41,9 +41,7 @@
 							<div class="mb-3">
 								<label for="inputEmail" class="form-label">Adresse e-mail</label>
 								<div class="input-group">
-									<span class="input-group-text">
-										<i class="bi bi-envelope"></i>
-									</span>
+									
 									<input type="email" class="form-control" id="inputEmail" name="email" value="{{ last_username }}" autocomplete="email" required placeholder="vous@exemple.com">
 								</div>
 							</div>
@@ -51,12 +49,10 @@
 							<div class="mb-2">
 								<label for="inputPassword" class="form-label d-flex justify-content-between">
 									<span>Mot de passe</span>
-									<a href="#" class="small text-decoration-none">Mot de passe oublié ?</a>
+									<a href="#" class="small text-decoration-none ">Mot de passe oublié ?</a>
 								</label>
 								<div class="input-group">
-									<span class="input-group-text">
-										<i class="bi bi-lock"></i>
-									</span>
+									
 									<input type="password" class="form-control" id="inputPassword" name="password" autocomplete="current-password" required placeholder="Votre mot de passe">
 								</div>
 							</div>
@@ -69,7 +65,7 @@
 									</label>
 								</div>
 								<!-- Espace réservé à un lien “Créer un compte” si besoin -->
-								<a href="#" class="small text-decoration-none">
+								<a href="{{path('app_register')}}" class="small text-decoration-none">
 									Créer un compte
 								</a>
 							</div>

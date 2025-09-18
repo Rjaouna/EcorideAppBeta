@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+	{# Active le thème Bootstrap si ce n’est pas déjà le cas #}
+	{% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
+
+	<div class="container min-vh-100 d-flex align-items-center py-5">
+		<div class="row justify-content-center w-100">
+			<div class="col-12 col-sm-10 col-md-8 col-lg-8">
+				<div class="card border-0 shadow-sm rounded-4">
+					<div
+						class="card-body p-4 p-md-5">
+
+						{# En-tête #}
+						<div class="text-center mb-4">
+							<h1 class="h4 mb-0 text-secondary">Créer un compte</h1>
+							<p class="text-muted small mb-0">Rejoignez la communauté EcoRide 🌿</p>
+						</div>
+
+						{# Flash erreurs #}
+						{% for flash_error in app.flashes('verify_email_error') %}
+							<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+						{% endfor %}
+
+						{{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
+						<div
+							class="row g-3">
+							{# Nom & Prénom #}
+							<div class="col-12 col-md-6">
+								{{ form_row(registrationForm.firstName, { label: 'Prénom' }) }}
+							</div>
+							<div class="col-12 col-md-6">
+								{{ form_row(registrationForm.lastName, { label: 'Nom' }) }}
+							</div>
+
+							{# Email & Pseudo #}
+							<div class="col-12 col-md-6">
+								{{ form_row(registrationForm.email, { label: 'Adresse e-mail' }) }}
+							</div>
+							<div class="col-12 col-md-6">
+								{{ form_row(registrationForm.pseudo, { label: 'Pseudo' }) }}
+							</div>
+
+							{# Téléphone & Date de naissance #}
+							<div class="col-12 col-md-6">
+								{{ form_row(registrationForm.phone, { label: 'Téléphone' }) }}
+							</div>
+							<div class="col-12 col-md-6">
+								{{ form_row(registrationForm.dateOfBirthAt, { label: 'Date de naissance' }) }}
+							</div>
+
+							{# Adresse (pleine largeur) #}
+							<div class="col-12">
+								{{ form_row(registrationForm.address, { label: 'Adresse postale' }) }}
+							</div>
+
+							{# Mot de passe & (optionnel) Confirmation #}
+							<div class="col-12 col-md-6">
+								{{ form_row(registrationForm.plainPassword, { label: 'Mot de passe' }) }}
+							</div>
+							{# Si tu as un second champ (RepeatedType), dé-commente :
+														            <div class="col-12 col-md-6">
+														              {{ form_row(registrationForm.plainPasswordSecond, { label: 'Confirmer le mot de passe' }) }}
+														            </div>
+														            #}
+
+							{# Photo (optionnel) #}
+							{% if registrationForm.photo is defined %}
+								<div class="col-12 col-md-6">
+									{{ form_row(registrationForm.photo, { label: 'Photo de profil' }) }}
+								</div>
+							{% endif %}
+
+							{# CGU / Consentement #}
+							<div class="col-12">
+								{{ form_row(registrationForm.agreeTerms, {
+                label: 'J’accepte les conditions générales et la politique de confidentialité'
+              }) }}
+							</div>
+
+							{# Bouton #}
+							<div class="col-12">
+								<button type="submit" class="btn btn-primary text-light w-100 rounded-pill">
+									Créer mon compte
+								</button>
+							</div>
+						</div>
+
+						{{ form_end(registrationForm) }}
+
+						<p class="text-center text-muted small mt-3 mb-0">
+							Déjà inscrit ?
+							<a href="{{ path('app_login') }}" class="text-decoration-none">Se connecter</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

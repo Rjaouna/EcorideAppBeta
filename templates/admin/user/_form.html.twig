@@ -1,0 +1,115 @@
+{# Exemple de rendu "style inscription" #}
+<div class="container-fluid d-flex align-items-center bg-white">
+	
+				<div
+					class="card-body p-4 p-md-5">
+
+
+					{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+					<div
+						class="row g-3">
+						{# Prénom / Nom #}
+						{% if form.firstName is defined %}
+							<div class="col-12 col-md-6">
+								{{ form_row(form.firstName, { label: 'Prénom' }) }}
+							</div>
+						{% endif %}
+						{% if form.lastName is defined %}
+							<div class="col-12 col-md-6">
+								{{ form_row(form.lastName, { label: 'Nom' }) }}
+							</div>
+						{% endif %}
+
+						{# Email / Pseudo #}
+						{% if form.email is defined %}
+							<div class="col-12 col-md-6">
+								{{ form_row(form.email, { label: 'Adresse e-mail' }) }}
+							</div>
+						{% endif %}
+						{% if form.pseudo is defined %}
+							<div class="col-12 col-md-6">
+								{{ form_row(form.pseudo, { label: 'Pseudo' }) }}
+							</div>
+						{% endif %}
+
+						{# Téléphone / Date de naissance #}
+						{% if form.phone is defined %}
+							<div class="col-12 col-md-6">
+								{{ form_row(form.phone, { label: 'Téléphone' }) }}
+							</div>
+						{% endif %}
+						{% if form.dateOfBirthAt is defined %}
+							<div class="col-12 col-md-6">
+								{{ form_row(form.dateOfBirthAt, { label: 'Date de naissance' }) }}
+							</div>
+						{% endif %}
+
+						{# Adresse (pleine largeur) #}
+						{% if form.address is defined %}
+							<div class="col-12">
+								{{ form_row(form.address, { label: 'Adresse postale' }) }}
+							</div>
+						{% endif %}
+
+						{# Mot de passe / Confirmation éventuelle #}
+						{% if form.plainPassword is defined %}
+							<div class="col-12 col-md-6">
+								{{ form_row(form.plainPassword, { label: 'Mot de passe' }) }}
+							</div>
+						{% endif %}
+						{# Ex : si tu utilises RepeatedType => form.plainPassword.second #}
+						{% if form.plainPassword2 is defined %}
+							<div class="col-12 col-md-6">
+								{{ form_row(form.plainPassword2, { label: 'Confirmer le mot de passe' }) }}
+							</div>
+						{% endif %}
+
+						{# Photo (optionnel) #}
+						{% if form.photo is defined %}
+							<div class="col-12 col-md-6">
+								{{ form_row(form.photo, { label: 'Photo de profil' }) }}
+							</div>
+						{% endif %}
+
+						{# Rôles (optionnel, en pleine largeur pour la lisibilité) #}
+						{% if form.roles is defined %}
+							<div class="col-12">
+								{{ form_row(form.roles, { label: 'Rôles' }) }}
+							</div>
+						{% endif %}
+
+						{# Email vérifié (optionnel) #}
+						{% if form.isVerified is defined %}
+							<div class="col-12 col-md-6 d-flex align-items-center">
+								{{ form_row(form.isVerified, { label: 'Email vérifié' }) }}
+							</div>
+						{% endif %}
+
+						{# CGU / Consentement (optionnel) #}
+						{% if form.agreeTerms is defined %}
+							<div class="col-12">
+								{{ form_row(form.agreeTerms, {
+                  label: 'J’accepte les conditions générales et la politique de confidentialité'
+                }) }}
+							</div>
+						{% endif %}
+
+						{# IMPORTANT : rendre le reste (CSRF, champs non affichés) AVANT le bouton #}
+						{{ form_rest(form) }}
+
+						<div class="col-12">
+							<button class="btn btn-primary text-light w-100 rounded-pill">
+								{{ button_label|default('Enregistrer') }}
+							</button>
+						</div>
+					</div>
+
+					{{ form_end(form) }}
+
+				
+
+				</div>
+		
+	</div>
+

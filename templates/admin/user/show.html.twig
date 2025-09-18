@@ -1,0 +1,152 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+	<div
+		class="container-fluid py-4">
+
+		{# ── En-tête : Titre + actions ─────────────────────────────── #}
+		<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+			<h1 class="h4 mb-0">
+				Utilisateur
+					<span class="text-muted">—
+						{{ user.firstName }} {{user.lastName}}</span>
+			</h1>
+
+			<div class="d-flex gap-2">
+                {# Boutons d’actions #}
+<a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary  mx-2">
+
+					<i class="bi bi-arrow-left"></i>
+					Retour à la liste
+				</a>
+<a href="{{ path('app_user_edit', {'id': user.id}) }}" class=" mx-2 btn btn-primary text-white">
+
+					<i class="bi bi-pencil-square"></i>
+					Modifier
+				</a>
+				{# Le formulaire de suppression reste inclus mais affiché en ligne #}
+<span class="d-inline-block  mx-2">
+
+					{{ include('admin/user/_delete_form.html.twig') }}
+				</span>
+			</div>
+		</div>
+
+		<div
+			class="row g-4">
+			{# ── Carte Profil ─────────────────────────────────────────── #}
+			<div class="col-12 col-lg-4">
+				<div class="card border-0 shadow-sm rounded-4 h-100">
+					<div
+						class="card-body text-center p-4">
+
+						{# Avatar / Photo #}
+						<div class="mb-3">
+							{% if user.photo %}
+								<img src="{{ asset('uploads/users/' ~ user.photo) }}" alt="Photo de {{ user.pseudo ?? user.email }}" class="rounded-circle shadow-sm" style="width:96px;height:96px;object-fit:cover;">
+							{% else %}
+								{% set initial = (user.pseudo ?? user.email|split('@')[0])|slice(0,1)|upper %}
+								<div class="rounded-circle bg-secondary bg-opacity-10 d-inline-flex align-items-center justify-content-center shadow-sm" style="width:96px;height:96px;">
+									<span class="fw-bold text-secondary fs-3">{{ initial }}</span>
+								</div>
+							{% endif %}
+						</div>
+
+						<div class="mb-1 fw-semibold">
+							{{ user.firstName }}
+							{{ user.lastName }}
+						</div>
+						<div class="text-muted small mb-3">
+							ID #{{ user.id }}
+						</div>
+
+						{# Vérification #}
+						<div class="mb-3">
+							{% if user.isVerified %}
+								<span class="badge bg-success">
+									<i class="bi bi-check-circle me-1"></i>
+									Vérifié</span>
+							{% else %}
+								<span class="badge bg-warning text-dark">
+									<i class="bi bi-exclamation-triangle me-1"></i>
+									Non vérifié</span>
+							{% endif %}
+						</div>
+
+						{# Rôles #}
+						<div class="text-start">
+							<div class="text-uppercase small text-muted mb-1">Rôles</div>
+							{% set labels = {
+              'ROLE_SUPER_ADMIN': 'Super Admin',
+              'ROLE_ADMIN':       'Admin',
+              'ROLE_MANAGER':     'Manager',
+              'ROLE_DRIVER':      'Driver',
+              'ROLE_PASSAGER':    'Passager',
+              'ROLE_USER':        'Utilisateur'
+            } %}
+							{% for r in user.roles %}
+								<span class="badge bg-secondary text-white me-1 mb-1">{{ labels[r]}}</span>
+							{% endfor %}
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			{# ── Détails utilisateur ──────────────────────────────────── #}
+			<div class="col-12 col-lg-8">
+				<div class="card border-0 shadow-sm rounded-4 h-100">
+					<div class="card-body p-4">
+						<h2 class="h6 text-uppercase text-muted mb-3">Détails</h2>
+
+						<div class="row g-3">
+							<div class="col-12 col-md-6">
+								<div class="small text-muted">Email</div>
+								<div class="fw-semibold">
+									<a href="mailto:{{ user.email }}" class="link-body-emphasis text-decoration-none">
+										{{ user.email }}
+									</a>
+								</div>
+							</div>
+
+							<div class="col-12 col-md-6">
+								<div class="small text-muted">Téléphone</div>
+								<div class="fw-semibold">
+									{% if user.phone %}
+										<a href="tel:{{ user.phone }}" class="link-body-emphasis text-decoration-none">{{ user.phone }}</a>
+									{% else %}
+										<span class="text-muted">—</span>
+									{% endif %}
+								</div>
+							</div>
+
+							<div class="col-12 col-md-6">
+								<div class="small text-muted">Date de naissance</div>
+								<div class="fw-semibold">
+									{{ user.dateOfBirthAt ? user.dateOfBirthAt|date('d/m/Y') : '—' }}
+								</div>
+							</div>
+
+							<div class="col-12 col-md-6">
+								<div class="small text-muted">Pseudo</div>
+								<div class="fw-semibold">{{ user.pseudo ?? '—' }}</div>
+							</div>
+
+							<div class="col-12">
+								<div class="small text-muted">Adresse</div>
+								<div class="fw-semibold">{{ user.address ?? '—' }}</div>
+							</div>
+						</div>
+
+					
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}
+

@@ -1,82 +1,67 @@
-<div class="container bg-light text-white py-4 mt-3 rounded-4 shadow-sm">
-<form method="get" action="#">
+<div class="container py-4 rounded-4 shadow-sm mb-3">
 
 
-    <div class="row g-2 g-md-3 align-items-end">
-      {# Départ #}
-      <div class="col-12 col-md-3">
-        <div class="input-group input-group-lg">
-          <span class="input-group-text rounded-start-pill bg-secondary text-white"><i class="bi bi-geo-alt"></i></span>
-          <input
-            type="text"
-            id="departureCity"
-            name="depart"
-            class="form-control rounded-end-pill"
-            placeholder="Départ : Paris, Lille…"
-            required
-            value="{{ depart|default('') }}"
-          >
-        </div>
-      </div>
+		<form method="get" action="#" class="p-3 p-md-4">
+			<h2 class="h5 mb-3 d-flex align-items-center gap-2">
+				<i class="bi bi-geo-alt-fill"></i>
+				Rechercher un covoiturage
+			</h2>
 
-      {# Swap #}
-      <div class="col-12 col-md-auto d-flex justify-content-center">
-        <button type="button" id="swap"
-                class="btn btn-light btn-lg rounded-circle shadow-sm mt-1 mt-md-0"
-                title="Permuter Départ / Arrivée"
-                style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;">
-          <i class="bi bi-arrow-left-right"></i>
-        </button>
-      </div>
+			<div
+				class="row g-2 g-md-3 align-items-end">
+				<!-- Départ -->
+				<div class="col-12 col-md-3">
+					<label for="departureCity" class="form-label small text-muted mb-1">Départ</label>
+					<div class="input-group input-group-lg">
+						<span class="input-group-text rounded-start-pill icon-chip">
+							<i class="bi bi-flag-fill"></i>
+						</span>
+						<input type="text" id="departureCity" name="depart" class="form-control rounded-end-pill" placeholder="Paris, Lille…" autocomplete="off" required value="{{ depart|default('') }}" inputmode="text">
+					</div>
+				</div>
 
-      {# Arrivée #}
-      <div class="col-12 col-md-3">
-        <div class="input-group input-group-lg">
-<span class="input-group-text rounded-start-pill bg-secondary text-white">
-	<i class="bi bi-flag"></i>
-</span>
+				<!-- Swap -->
+				<div class="col-12 col-md-auto d-flex justify-content-center">
+					<button type="button" id="swap" class="btn btn-ghost-eco btn-lg rounded-circle shadow-sm mt-1 mt-md-4" title="Permuter Départ / Arrivée" aria-label="Permuter villes" style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;">
+						<i class="bi bi-arrow-left-right"></i>
+					</button>
+				</div>
 
-          <input
-            type="text"
-            id="destinationCity"
-            name="arrivee"
-            class="form-control rounded-end-pill"
-            placeholder="Arrivée : Marseille, Lyon…"
-            required
-            value="{{ arrivee|default('') }}"
-          >
-        </div>
-      </div>
+				<!-- Arrivée -->
+				<div class="col-12 col-md-3">
+					<label for="destinationCity" class="form-label small text-muted mb-1">Arrivée</label>
+					<div class="input-group input-group-lg">
+						<span class="input-group-text rounded-start-pill icon-chip">
+							<i class="bi bi-flag"></i>
+						</span>
+						<input type="text" id="destinationCity" name="arrivee" class="form-control rounded-end-pill" placeholder="Marseille, Lyon…" autocomplete="off" required value="{{ arrivee|default('') }}">
+					</div>
+				</div>
 
-      {# Date #}
-      <div class="col-6 col-md-3">
-        <div class="input-group input-group-lg">
-<span class="input-group-text rounded-start-pill bg-secondary text-white">
-	<i class="bi bi-calendar-event"></i>
-</span>
+				<!-- Date -->
+				<div class="col-6 col-md-3">
+					<label for="travelDate" class="form-label small text-muted mb-1">Date</label>
+					<div class="input-group input-group-lg">
+						<span class="input-group-text rounded-start-pill icon-chip">
+							<i class="bi bi-calendar-event"></i>
+						</span>
+						<input type="date" id="travelDate" name="departAt" class="form-control rounded-end-pill" value="{{ departAt|default('') }}">
+					</div>
+				</div>
 
-          <input
-            type="date"
-            id="travelDate"
-            name="departAt"
-            class="form-control rounded-end-pill"
-            value="{{ departAt|default('') }}"
-          >
-        </div>
-      </div>
-
-      {# Rechercher #}
-      <div class="col-6 col-md-2 d-grid">
-        <label class="form-label mb-1 invisible">Rechercher</label>
-        <button type="submit" class="btn btn-primary btn-lg rounded-pill text-white">
-          <i class="bi bi-search me-1"></i> Rechercher
-        </button>
-      </div>
-    </div>
-  </form>
+				<!-- Rechercher -->
+				<div class="col-6 col-md-2 d-grid">
+					<label class="form-label mb-1 invisible">Rechercher</label>
+					<button type="submit" class="btn btn-eco btn-lg rounded-pill">
+						<i class="bi bi-search me-1"></i>
+						Rechercher
+					</button>
+				</div>
+			</div>
+		</form>
 </div>
 
-<script>
+ <script>
 (() => {
   const dep  = document.getElementById('departureCity');
   const dest = document.getElementById('destinationCity');
@@ -89,16 +74,84 @@
     dep.focus();
   });
 
-  // Optionnel : min = aujourd'hui
+  // min = aujourd'hui si vide
   const d = document.getElementById('travelDate');
   if (d && !d.value) d.min = new Date().toISOString().split('T')[0];
 })();
 </script>
 
 <style>
-/* Ajuste légèrement la taille en très petit écran */
-@media (max-width: 575.98px){
-  .input-group.input-group-lg .form-control,
-  .input-group.input-group-lg .input-group-text{ font-size: 1rem; }
+/* Palette EcoRide */:root
+{
+	--eco-primary: #1DB575;
+	--eco-primary-600: #17a566;
+	--eco-secondary: #444545;
+	--eco-bg: #F8FAFC;
 }
-</style>
+
+/* Carte de recherche */
+.search-card {
+	background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
+	border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Bouton principal (respecte Bootstrap mais teinte EcoRide) */
+.btn-eco {
+	background-color: var(--eco-primary);
+	border-color: var(--eco-primary);
+	color: #fff;
+}
+.btn-eco:hover,
+.btn-eco:focus {
+	background-color: var(--eco-primary-600);
+	border-color: var(--eco-primary-600);
+	color: #fff;
+}
+
+/* Bouton swap discret */
+.btn-ghost-eco {
+	background-color: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+}
+.btn-ghost-eco:hover {
+	border-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Pastilles icônes à gauche des champs */
+.icon-chip {
+	background: var(--eco-secondary);
+	color: #fff;
+	border: 0;
+}
+
+/* Inputs “pill” propres */
+.input-group.input-group-lg .form-control {
+	border-left: 0;
+}
+.input-group .form-control:focus {
+	box-shadow: 0 0 0 0.25rem rgba(29, 181, 117, 0.15);
+	border-color: var(--eco-primary);
+}
+
+/* Labels discrets */
+.form-label.small {
+	font-size: 0.85rem;
+}
+
+/* Alignement / respiration mobile */
+@media(max-width: 575.98px) {
+	.input-group.input-group-lg .form-control,
+	.input-group.input-group-lg .input-group-text {
+		font-size: 1rem;
+	}
+	.search-card {
+		border-radius: 1rem;
+	}
+}
+
+/* Accessibilité focus visible pour les boutons */
+.btn:focus-visible {
+	outline: 3px solid rgba(29, 181, 117, 0.35);
+	outline-offset: 2px;
+}</style>
+

@@ -1,0 +1,24 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}New User{% endblock %}
+
+{% block body %}
+{# En-tête : Titre + actions #}
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 mx-2">
+	<h1 class="h4 mb-0">Ajouter un utilisateur</h1>
+	<div class="d-flex gap-2">
+
+<a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary  mx-2">
+
+Liste utilisateurs</a>
+
+
+
+
+	</div>
+</div>
+
+
+    {{ include('admin/user/_form.html.twig') }}
+
+{% endblock %}
