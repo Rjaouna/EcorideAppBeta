@@ -1,157 +1,138 @@
-<div class="container py-4 rounded-4 shadow-sm mb-3">
+<!-- … ton HTML … -->
+<div class="container py-4 rounded-4 shadow-sm">
+	<form method="get" action="#" class="p-3 p-md-4">
+		<h2 class="h5 mb-3 d-flex align-items-center gap-2">
+			<i class="bi bi-geo-alt-fill text-primary"></i>
+			Rechercher un covoiturage
+		</h2>
 
-
-		<form method="get" action="#" class="p-3 p-md-4">
-			<h2 class="h5 mb-3 d-flex align-items-center gap-2">
-				<i class="bi bi-geo-alt-fill"></i>
-				Rechercher un covoiturage
-			</h2>
-
-			<div
-				class="row g-2 g-md-3 align-items-end">
-				<!-- Départ -->
-				<div class="col-12 col-md-3">
-					<label for="departureCity" class="form-label small text-muted mb-1">Départ</label>
-					<div class="input-group input-group-lg">
-						<span class="input-group-text rounded-start-pill icon-chip">
-							<i class="bi bi-flag-fill"></i>
-						</span>
-						<input type="text" id="departureCity" name="depart" class="form-control rounded-end-pill" placeholder="Paris, Lille…" autocomplete="off" required value="{{ depart|default('') }}" inputmode="text">
-					</div>
-				</div>
-
-				<!-- Swap -->
-				<div class="col-12 col-md-auto d-flex justify-content-center">
-					<button type="button" id="swap" class="btn btn-ghost-eco btn-lg rounded-circle shadow-sm mt-1 mt-md-4" title="Permuter Départ / Arrivée" aria-label="Permuter villes" style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;">
-						<i class="bi bi-arrow-left-right"></i>
-					</button>
-				</div>
-
-				<!-- Arrivée -->
-				<div class="col-12 col-md-3">
-					<label for="destinationCity" class="form-label small text-muted mb-1">Arrivée</label>
-					<div class="input-group input-group-lg">
-						<span class="input-group-text rounded-start-pill icon-chip">
-							<i class="bi bi-flag"></i>
-						</span>
-						<input type="text" id="destinationCity" name="arrivee" class="form-control rounded-end-pill" placeholder="Marseille, Lyon…" autocomplete="off" required value="{{ arrivee|default('') }}">
-					</div>
-				</div>
-
-				<!-- Date -->
-				<div class="col-6 col-md-3">
-					<label for="travelDate" class="form-label small text-muted mb-1">Date</label>
-					<div class="input-group input-group-lg">
-						<span class="input-group-text rounded-start-pill icon-chip">
-							<i class="bi bi-calendar-event"></i>
-						</span>
-						<input type="date" id="travelDate" name="departAt" class="form-control rounded-end-pill" value="{{ departAt|default('') }}">
-					</div>
-				</div>
-
-				<!-- Rechercher -->
-				<div class="col-6 col-md-2 d-grid">
-					<label class="form-label mb-1 invisible">Rechercher</label>
-					<button type="submit" class="btn btn-eco btn-lg rounded-pill">
-						<i class="bi bi-search me-1"></i>
-						Rechercher
-					</button>
+		<div
+			class="row g-2 g-md-3 align-items-end">
+			<!-- Départ -->
+			<div class="col-12 col-md-3">
+				<label for="departureCity" class="form-label small text-muted mb-1" id="labelDepart">Départ</label>
+				<div class="input-group input-group-lg">
+					<span class="input-group-text rounded-start-pill icon-chip">
+						<i class="bi bi-flag-fill"></i>
+					</span>
+					<input type="text" id="departureCity" name="depart" class="form-control rounded-end-pill" placeholder="Paris, Lille…" autocomplete="off" required value="{{ depart|default('') }}" inputmode="text">
 				</div>
 			</div>
-		</form>
+
+			<!-- Swap -->
+			<div class="col-12 col-md-auto d-flex justify-content-center">
+				<button type="button" id="swap" class="btn btn-ghost-eco btn-lg rounded-circle shadow-sm mt-1 mt-md-4" title="Permuter Départ / Arrivée" aria-label="Permuter villes" style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;">
+					<i class="bi bi-arrow-left-right"></i>
+				</button>
+			</div>
+
+			<!-- Arrivée -->
+			<div class="col-12 col-md-3">
+				<label for="destinationCity" class="form-label small text-muted mb-1" id="labelArrivee">Arrivée</label>
+				<div class="input-group input-group-lg">
+					<span class="input-group-text rounded-start-pill icon-chip">
+						<i class="bi bi-flag"></i>
+					</span>
+					<input type="text" id="destinationCity" name="arrivee" class="form-control rounded-end-pill" placeholder="Marseille, Lyon…" autocomplete="off" required value="{{ arrivee|default('') }}">
+				</div>
+			</div>
+
+			<!-- Date -->
+			<div class="col-6 col-md-3">
+				<label for="travelDate" class="form-label small text-muted mb-1" id="labelDate">Date</label>
+				<div class="input-group input-group-lg">
+					<span class="input-group-text rounded-start-pill icon-chip">
+						<i class="bi bi-calendar-event"></i>
+					</span>
+					<input type="date" id="travelDate" name="departAt" class="form-control rounded-end-pill" value="{{ departAt|default('') }}">
+				</div>
+			</div>
+
+			<!-- Rechercher -->
+			<div class="col-6 col-md-2 d-grid">
+				<label class="form-label mb-1 invisible">Rechercher</label>
+				<button type="submit" class="btn btn-primary btn-lg rounded-pill text-white">
+					<i class="bi bi-search me-1"></i>
+					Rechercher
+				</button>
+			</div>
+		</div>
+	</form>
 </div>
+
+<style>
+	/* Style “beau focus” pour les labels */
+	.label-focus {
+		font-weight: 700; /* gras */
+		color: #1db575 !important; /* vert EcoRide */
+		letter-spacing: 0.2px;
+	}
+
+	/* Optionnel: petite transition douce */
+	#labelDepart,
+	#labelArrivee,
+	#labelDate {
+		transition: color 0.15s ease, font-weight 0.15s ease;
+	}
+</style>
 
  <script>
 (() => {
-  const dep  = document.getElementById('departureCity');
-  const dest = document.getElementById('destinationCity');
-  const swapBtn = document.getElementById('swap');
+  const dep   = document.getElementById('departureCity');
+  const dest  = document.getElementById('destinationCity');
+  const dateI = document.getElementById('travelDate');
+  const swap  = document.getElementById('swap');
 
-  swapBtn?.addEventListener('click', () => {
+  const lblDep = document.getElementById('labelDepart');
+  const lblArr = document.getElementById('labelArrivee');
+  const lblDat = document.getElementById('labelDate');
+
+  // Textes par défaut
+  const LBL_DEFAULT = {
+    dep: 'Départ',
+    arr: 'Arrivée',
+    dat: 'Date',
+  };
+
+  // Textes “aide” au focus
+  const LBL_FOCUS = {
+    dep: "D'où partez-vous ?",
+    arr: "Où allez-vous ?",
+    dat: "Quand partez-vous ?",
+  };
+
+  function focusLabel(labelEl, text) {
+    if (!labelEl) return;
+    labelEl.textContent = text;
+    labelEl.classList.add('label-focus');
+  }
+  function blurLabel(labelEl, text) {
+    if (!labelEl) return;
+    labelEl.textContent = text;
+    labelEl.classList.remove('label-focus');
+  }
+
+  dep?.addEventListener('focus', () => focusLabel(lblDep, LBL_FOCUS.dep));
+  dep?.addEventListener('blur',  () => blurLabel(lblDep,  LBL_DEFAULT.dep));
+
+  dest?.addEventListener('focus', () => focusLabel(lblArr, LBL_FOCUS.arr));
+  dest?.addEventListener('blur',  () => blurLabel(lblArr,  LBL_DEFAULT.arr));
+
+  dateI?.addEventListener('focus', () => focusLabel(lblDat, LBL_FOCUS.dat));
+  dateI?.addEventListener('blur',  () => blurLabel(lblDat,  LBL_DEFAULT.dat));
+
+  // Swap Départ / Arrivée
+  swap?.addEventListener('click', () => {
     const tmp = dep.value;
     dep.value = dest.value;
     dest.value = tmp;
-    dep.focus();
+    dep.focus(); 
   });
 
-  // min = aujourd'hui si vide
-  const d = document.getElementById('travelDate');
-  if (d && !d.value) d.min = new Date().toISOString().split('T')[0];
+  // Date min = aujourd'hui si vide
+  if (dateI && !dateI.value) {
+    dateI.min = new Date().toISOString().split('T')[0];
+  }
 })();
 </script>
-
-<style>
-/* Palette EcoRide */:root
-{
-	--eco-primary: #1DB575;
-	--eco-primary-600: #17a566;
-	--eco-secondary: #444545;
-	--eco-bg: #F8FAFC;
-}
-
-/* Carte de recherche */
-.search-card {
-	background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
-	border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-/* Bouton principal (respecte Bootstrap mais teinte EcoRide) */
-.btn-eco {
-	background-color: var(--eco-primary);
-	border-color: var(--eco-primary);
-	color: #fff;
-}
-.btn-eco:hover,
-.btn-eco:focus {
-	background-color: var(--eco-primary-600);
-	border-color: var(--eco-primary-600);
-	color: #fff;
-}
-
-/* Bouton swap discret */
-.btn-ghost-eco {
-	background-color: #fff;
-	border: 1px solid rgba(0, 0, 0, 0.06);
-}
-.btn-ghost-eco:hover {
-	border-color: rgba(0, 0, 0, 0.12);
-}
-
-/* Pastilles icônes à gauche des champs */
-.icon-chip {
-	background: var(--eco-secondary);
-	color: #fff;
-	border: 0;
-}
-
-/* Inputs “pill” propres */
-.input-group.input-group-lg .form-control {
-	border-left: 0;
-}
-.input-group .form-control:focus {
-	box-shadow: 0 0 0 0.25rem rgba(29, 181, 117, 0.15);
-	border-color: var(--eco-primary);
-}
-
-/* Labels discrets */
-.form-label.small {
-	font-size: 0.85rem;
-}
-
-/* Alignement / respiration mobile */
-@media(max-width: 575.98px) {
-	.input-group.input-group-lg .form-control,
-	.input-group.input-group-lg .input-group-text {
-		font-size: 1rem;
-	}
-	.search-card {
-		border-radius: 1rem;
-	}
-}
-
-/* Accessibilité focus visible pour les boutons */
-.btn:focus-visible {
-	outline: 3px solid rgba(29, 181, 117, 0.35);
-	outline-offset: 2px;
-}</style>
 
