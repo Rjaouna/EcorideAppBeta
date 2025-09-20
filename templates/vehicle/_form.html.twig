@@ -1,0 +1,71 @@
+{# templates/vehicle/_form.html.twig #}
+{{ form_start(form, {
+  attr: {
+    class: 'needs-validation',
+    novalidate: 'novalidate'
+  }
+}) }}
+
+{# --- Affichage global des erreurs du formulaire --- #}
+{% if form_errors(form) %}
+	<div class="alert alert-danger">
+		{{ form_errors(form) }}
+	</div>
+{% endif %}
+
+<div class="row g-3">
+	<div class="col-12 col-md-6">
+		{{ form_row(form.plateNumber, {
+      label: 'Plaque d’immatriculation',
+      attr: { placeholder: 'AA-123-BB', class: 'text-uppercase' }
+    }) }}
+	</div>
+
+	<div class="col-12 col-md-6">
+		{{ form_row(form.firstRegistrationAt, {
+      label: 'Date de première immatriculation'
+    }) }}
+	</div>
+
+	<div class="col-12 col-md-4">
+		{{ form_row(form.brand, { label: 'Marque', attr: { placeholder: 'Renault…' } }) }}
+	</div>
+
+	<div class="col-12 col-md-4">
+		{{ form_row(form.model, { label: 'Modèle', attr: { placeholder: 'Clio…' } }) }}
+	</div>
+
+	<div class="col-12 col-md-4">
+		{{ form_row(form.color, { label: 'Couleur', attr: { placeholder: 'Noir…' } }) }}
+	</div>
+
+	<div class="col-12 col-md-4">
+		{{ form_row(form.seats, { label: 'Places disponibles' }) }}
+	</div>
+
+	<div class="col-12 col-md-4">
+		{{ form_row(form.isElectric, { label: 'Véhicule électrique' }) }}
+	</div>
+
+	{# Si tu as le champ "active" #}
+	{# <div class="col-12 col-md-4">
+	    {{ form_row(form.active, { label: 'Actif' }) }}
+	  </div> #}
+</div>
+
+<hr class="my-4">
+
+<div class="d-flex gap-2">
+<a href="{{ path('app_driver_preferences_index') }}" class="btn btn-outline-secondary">
+
+		<i class="bi bi-arrow-left"></i>
+		Annuler
+	</a>
+	<button class="btn btn-primary">
+		<i class="bi bi-save me-1"></i>
+		{{ button_label|default('Enregistrer') }}
+	</button>
+</div>
+
+{{ form_end(form) }}
+

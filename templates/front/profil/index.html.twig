@@ -1,0 +1,200 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfilController!
+{% endblock %}
+
+{% block body %}
+
+	<div
+		class="container mt-5 mb-2">
+<h5 class="my-3">A propos de vous</h5>
+{% set hasDriver = is_granted('ROLE_DRIVER') %}
+{% set hasPassenger = is_granted('ROLE_PASSENGER') %}
+
+
+
+
+		{# ——— BOUTON QUI DÉPLIE ——— #}
+		<a href="#profilDetails" class="btn btn-light w-100 text-start p-3 shadow-sm rounded-3 d-flex align-items-center justify-content-between" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="profilDetails" id="profilToggle">
+			<div class="d-flex align-items-center gap-3">
+				<div class="flex-shrink-0">
+					{% if profil.imageName %}
+						<img src="{{ vich_uploader_asset(profil, 'imageFile') }}" alt="Photo de {{ (profil.pseudo ?? profil.email)|e }}" class="rounded-circle shadow-sm" style="width:64px;height:64px;object-fit:cover;">
+					{% else %}
+						{% set initials = ((profil.prenom|default('')|first) ~ (profil.nom|default('')|first))|upper %}
+						<div class="rounded-circle bg-white border d-flex align-items-center justify-content-center shadow-sm" style="width:64px;height:64px;">
+							<span class="fw-semibold text-secondary">
+								{{ initials ?: (profil.pseudo|default(profil.email)|first|upper) }}
+							</span>
+						</div>
+					{% endif %}
+				</div>
+
+				<div>
+<div class="fw-semibold">@{{ profil.pseudo ?? profil.email }}
+<span class="text-muted small">(Je suis
+
+	{% if hasDriver and hasPassenger %}
+		Passager et Conducteur
+	{% elseif hasDriver %}
+		Conducteur
+	{% elseif hasPassenger %}
+		Passager
+	{% else %}
+		—
+	{% endif %})</span></div>
+
+					<div class="text-muted small">{{ profil.firstName }}
+{{ profil.lastName }}</div>
+
+				</div>
+			</div>
+
+			<i class="bi bi-chevron-right opacity-50" id="chevron"></i>
+		</a>
+
+		{# ——— PANNEAU DÉPLIABLE ——— #}
+		<div class="collapse mt-2" id="profilDetails">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body">
+					<h6 class="text-uppercase text-muted mb-3">Informations du profil</h6>
+
+					<div class="row g-3">
+						<div class="col-md-6">
+							<div class="small text-muted">Pseudo</div>
+							<div class="fw-semibold">{{ profil.pseudo ?? '—' }}</div>
+						</div>
+						<div class="col-md-6">
+							<div class="small text-muted">Email</div>
+							<div class="fw-semibold">{{ profil.email ?? '—' }}</div>
+						</div>
+
+
+						<div class="col-md-6">
+							<div class="small text-muted">Prénom</div>
+							<div class="fw-semibold">{{ profil.firstName ?? profil.prenom ?? '—' }}</div>
+						</div>
+						<div class="col-md-6">
+							<div class="small text-muted">Nom</div>
+							<div class="fw-semibold">{{ profil.lastName ?? profil.nom ?? '—' }}</div>
+						</div>
+
+						{# (téléphone, address, ville, etc.) #}
+						{% if profil.phone is defined %}
+							<div class="col-md-6">
+								<div class="small text-muted">Téléphone</div>
+								<div class="fw-semibold">{{ profil.phone ?: '—' }}</div>
+							</div>
+						{% endif %}
+
+						{% if profil.address is defined or profil.ville is defined or profil.codepostale is defined or profil.pays is defined %}
+							<div class="col-6">
+								<div class="small text-muted">Adresse</div>
+								<div class="fw-semibold">
+									{{ profil.address ?? '' }}
+								</div>
+							</div>
+						{% endif %}
+<div class="col-md-6">
+	<div class="small text-muted">Véhicule(s)</div>
+	<div class="fw-semibold">
+{% if profil.vehicles is empty %}
+	<span class="text-muted">Aucun véhicule.</span>
+{% else %}
+	<ul class="mb-0">
+		{% for v in profil.vehicles %}
+			<li>
+<strong>
+	<a class="text-secondary" href="{{ path('app_vehicle_edit', {'id': v.id}) }}">{{ v.brand }}
+
+					{{ v.model }}</a></strong>
+				—
+				{{ v.color|default('—') }},
+				{{ v.seats }}
+				places
+				{% if v.isElectric %}
+					<span class="badge bg-success ms-1">Électrique</span>
+				{% endif %}
+				<span class="badge bg-light text-dark ms-1">{{ v.plateNumber }}</span>
+			</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+
+
+	</div>
+</div>
+
+					</div>
+
+					<div class="mt-3 d-flex gap-2">
+
+<a href="{{ path('app_profil_edit', { id: profil.id }) }}" class="btn btn-link fw-bold">
+
+
+	Modifier mon profil
+</a>
+
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="container my-2">
+		<a href="{{ path('profile_avatar_edit', { id: profil.id }) }}" class="btn btn-light fw-bold text-start p-3 shadow-sm rounded-3 d-flex align-items-center justify-content-between">
+			Modifier la photo de profil
+		</a>
+	</div>
+
+<div class="container my-2">
+<a href="{{ path('app_driver_preferences_index')}}" class="btn btn-light fw-bold text-start p-3 shadow-sm rounded-3 d-flex align-items-center justify-content-between">
+
+		Mes préférences
+	</a>
+</div>
+
+
+	
+
+
+
+ <script>
+(function () {
+  const collapseId = 'profilDetails';
+  const target   = document.getElementById(collapseId);
+  const chevron  = document.getElementById('chevron');
+  const toggle   = document.querySelector(
+    `[data-bs-toggle="collapse"][href="#${collapseId}"],[data-bs-toggle="collapse"][data-bs-target="#${collapseId}"]`
+  );
+  if (!target || !chevron || !toggle) return;
+
+  function setIcon(expanded) {
+    chevron.classList.toggle('bi-chevron-right', !expanded);
+    chevron.classList.toggle('bi-chevron-down',  expanded);
+  }
+
+  // État initial (si la div est déjà ouverte ou aria-expanded="true")
+  setIcon(target.classList.contains('show') || toggle.getAttribute('aria-expanded') === 'true');
+
+  // Écoute les événements Bootstrap
+  target.addEventListener('shown.bs.collapse',  () => setIcon(true));
+  target.addEventListener('hidden.bs.collapse', () => setIcon(false));
+
+  // Fallback si Bootstrap JS n'est pas chargé : bascule l'icône au clic
+  toggle.addEventListener('click', () => {
+    if (typeof bootstrap === 'undefined' || !bootstrap.Collapse) {
+      setIcon(!chevron.classList.contains('bi-chevron-down'));
+    }
+  });
+})();
+</script>
+
+
+
+
+{% endblock %}
+

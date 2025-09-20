@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la photo de profil
+{% endblock %}
+
+{% block body %}
+	<div class="container py-4">
+		<h1 class="h4 mb-3">Modifier la photo de profil</h1>
+<a href="{{ path('app_front_profil') }}" class="btn btn-link mt-3">
+
+	← Retour à mon profil
+</a>
+
+		<div class="card border-0 shadow-sm">
+			<div class="card-body">
+{# Aperçu actuel (optionnel, si image_uri désactivé côté champ) #}
+{% if user.imageName %}
+	<div class="mb-3">
+		<img src="{{ vich_uploader_asset(user, 'imageFile') }}" alt="Aperçu avatar" class="rounded-circle shadow-sm" style="width:96px;height:96px;object-fit:cover;">
+	</div>
+{% endif %}
+
+				{{ form_start(form, { attr: { enctype: 'multipart/form-data' } }) }}
+
+				<div class="mb-3">
+					{{ form_label(form.imageFile) }}
+					{{ form_widget(form.imageFile, { attr: { class: 'form-control' } }) }}
+					{{ form_help(form.imageFile) }}
+					{{ form_errors(form.imageFile) }}
+				</div>
+
+				
+
+				<div class="d-flex gap-2">
+					<button type="submit" class="btn btn-primary">
+						Enregistrer
+					</button>
+<a href="{{ path('app_front_profil', { id: user.id }) }}" class="btn btn-outline-secondary">
+
+						Annuler
+					</a>
+				</div>
+
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

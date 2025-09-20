@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vehicle{% endblock %}
+
+{% block body %}
+    <h1>Vehicle</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ vehicle.id }}</td>
+            </tr>
+            <tr>
+                <th>PlateNumber</th>
+                <td>{{ vehicle.plateNumber }}</td>
+            </tr>
+            <tr>
+                <th>FirstRegistrationAt</th>
+                <td>{{ vehicle.firstRegistrationAt ? vehicle.firstRegistrationAt|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Brand</th>
+                <td>{{ vehicle.brand }}</td>
+            </tr>
+            <tr>
+                <th>Model</th>
+                <td>{{ vehicle.model }}</td>
+            </tr>
+            <tr>
+                <th>Color</th>
+                <td>{{ vehicle.color }}</td>
+            </tr>
+            <tr>
+                <th>Seats</th>
+                <td>{{ vehicle.seats }}</td>
+            </tr>
+            <tr>
+                <th>IsElectric</th>
+                <td>{{ vehicle.isElectric ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Active</th>
+                <td>{{ vehicle.active ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ vehicle.updatedAt ? vehicle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_vehicle_index') }}">back to list</a>
+
+    <a href="{{ path('app_vehicle_edit', {'id': vehicle.id}) }}">edit</a>
+
+    {{ include('vehicle/_delete_form.html.twig') }}
+{% endblock %}

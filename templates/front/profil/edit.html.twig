@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User
+{% endblock %}
+
+{% block body %}
+<h5 class="my-3">Modifier mon profil</h5>
+
+
+		<div class="card border-0 shadow-sm rounded-4">
+				{{ include('admin/user/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+		</div>
+{% endblock %}
+

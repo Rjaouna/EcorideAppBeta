@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit DriverPreferences{% endblock %}
+
+{% block body %}
+
+    <h5 class="my-3">Modifier mes préférences de conducteur</h5>
+<a href="{{ path('app_driver_preferences_index') }}" class="btn btn-link mt-3">
+	← Retour à mes préférences
+</a>
+
+    {{ include('front/driver_preferences/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+
+</div>
+{% endblock %}

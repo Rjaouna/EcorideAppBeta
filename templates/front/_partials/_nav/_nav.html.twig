@@ -108,17 +108,23 @@
 							</div>
 							<div class="dropdown-divider"></div>
 
-							<a class="dropdown-item" href="#">
+<a class="dropdown-item" href="{{path('app_front_profil')}}">
+
+
 								<i class="bi bi-person-circle me-2"></i>
 								Mon profil
 							</a>
-							<a class="dropdown-item" href="#">
+<a class="dropdown-item" href="{{path('app_driver_preferences_index')}}">
+
+
 								<i class="bi bi-sliders2 me-2"></i>
 								Mes préférences
 							</a>
 
 							{% if isDriver %}
-								<a class="dropdown-item" href="{{ path('app_couvoiturage_index') }}">
+<a class="dropdown-item" href="#">
+
+
 									<i class="bi bi-calendar2-event me-2"></i>
 									Mes covoiturages
 								</a>

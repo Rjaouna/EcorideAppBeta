@@ -32,6 +32,27 @@
 
 <div class="container my-2">
 
+{% for label, messages in app.flashes %}
+	{% set bsClass = {
+    'success':'success',
+    'warning':'warning',
+    'error':'danger',
+    'danger':'danger',
+    'info':'info',
+    'notice':'info'
+  }[label]|default('secondary') %}
+
+	{% for message in messages %}
+		<div class="container-fluid">
+			<div class="alert alert-{{ bsClass }} alert-dismissible fade show" role="alert">
+				{{ message|raw }}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+			</div>
+		</div>
+	{% endfor %}
+{% endfor %}
+
+
 
 		{% block body %}{% endblock %}
 	</div>

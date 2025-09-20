@@ -1,0 +1,113 @@
+{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+
+{# ——— Alerte erreurs globales ——— #}
+{% if not form.vars.valid %}
+	<div class="alert alert-danger" role="alert">
+		Veuillez corriger les erreurs ci-dessous.
+	</div>
+{% endif %}
+
+<div class="card border-0 shadow-sm rounded-3">
+	<div
+		class="card-body">
+
+		{# ——— Fumeur autorisé ——— #}
+		<div class="mb-3">
+			{{ form_label(form.smokingAllowed, 'Autoriser fumeur') }}
+			<div class="form-check form-switch">
+				{{ form_widget(form.smokingAllowed, { attr: { class: 'form-check-input' } }) }}
+				<label class="form-check-label" for="{{ form.smokingAllowed.vars.id }}">
+				</label>
+			</div>
+			{{ form_errors(form.smokingAllowed) }}
+		</div>
+
+		{# ——— Animaux autorisés ——— #}
+		<div class="mb-3">
+			{{ form_label(form.petsAllowed, 'Autoriser animaux') }}
+			<div class="form-check form-switch">
+				{{ form_widget(form.petsAllowed, { attr: { class: 'form-check-input' } }) }}
+				<label class="form-check-label" for="{{ form.petsAllowed.vars.id }}">
+				</label>
+			</div>
+			{{ form_errors(form.petsAllowed) }}
+		</div>
+
+		{# ——— Extras (tags) ——— #}
+		<div class="mb-3">
+			<label class="form-label">Extras (tags)</label>
+
+			<div
+				id="extras-collection" class="d-grid gap-2" data-prototype="{{ form_widget(form.extras.vars.prototype)|e('html_attr') }}" data-index="{{ form.extras|length }}">
+				{# champs existants #}
+				{% for entry in form.extras %}
+					<div class="input-group">
+						{{ form_widget(entry, { attr: { class: 'form-control', placeholder: 'ex: siège enfant' } }) }}
+						<button type="button" class="btn btn-outline-danger remove-extra">Supprimer</button>
+					</div>
+				{% endfor %}
+			</div>
+
+			<div class="mt-2">
+				<button type="button" class="btn btn-outline-primary btn-sm" id="add-extra">
+					+ Ajouter un extra
+				</button>
+			</div>
+
+<div class="form-text">Ajoutez une ou plusieurs conditions du conducteur.</div>
+
+			{{ form_errors(form.extras) }}
+		</div>
+
+	</div>
+
+	<div class="card-footer bg-transparent d-flex gap-2 justify-content-end">
+		<a href="{{ path('app_driver_preferences_index') }}" class="btn btn-outline-secondary">
+			Annuler
+		</a>
+		<button type="submit" class="btn btn-primary">
+			{{ button_label|default('Enregistrer') }}
+		</button>
+	</div>
+</div>
+ <script>
+  (function () {
+    const holder = document.getElementById('extras-collection');
+    if (!holder) return;
+
+    const addBtn = document.getElementById('add-extra');
+    const proto  = holder.dataset.prototype;
+
+    function addExtra(value = '') {
+      const index = parseInt(holder.dataset.index || '0', 10);
+      holder.dataset.index = String(index + 1);
+
+      let html = proto.replace(/__name__/g, index);
+      const wrapper = document.createElement('div');
+      wrapper.className = 'input-group';
+      wrapper.innerHTML = html +
+        '<button type="button" class="btn btn-outline-danger remove-extra">Supprimer</button>';
+
+      const input = wrapper.querySelector('input, textarea');
+      if (input && value) input.value = value;
+
+      holder.appendChild(wrapper);
+    }
+
+    holder.addEventListener('click', function (e) {
+      if (e.target.matches('.remove-extra')) {
+        e.preventDefault();
+        e.target.closest('.input-group')?.remove();
+      }
+    });
+
+    addBtn?.addEventListener('click', function (e) {
+      e.preventDefault();
+      addExtra();
+    });
+  })();
+</script>
+
+
+{{ form_end(form) }}
+
