@@ -70,9 +70,16 @@ class Carpooling
     #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: 'trip')]
     private Collection $bookings;
 
+    /**
+     * @var Collection<int, DriverReview>
+     */
+    #[ORM\OneToMany(targetEntity: DriverReview::class, mappedBy: 'trip')]
+    private Collection $driverReviews;
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
+        $this->driverReviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -272,6 +279,36 @@ class Carpooling
             // set the owning side to null (unless already changed)
             if ($booking->getTrip() === $this) {
                 $booking->setTrip(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DriverReview>
+     */
+    public function getDriverReviews(): Collection
+    {
+        return $this->driverReviews;
+    }
+
+    public function addDriverReview(DriverReview $driverReview): static
+    {
+        if (!$this->driverReviews->contains($driverReview)) {
+            $this->driverReviews->add($driverReview);
+            $driverReview->setTrip($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDriverReview(DriverReview $driverReview): static
+    {
+        if ($this->driverReviews->removeElement($driverReview)) {
+            // set the owning side to null (unless already changed)
+            if ($driverReview->getTrip() === $this) {
+                $driverReview->setTrip(null);
             }
         }
 
