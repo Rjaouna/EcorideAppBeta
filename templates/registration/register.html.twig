@@ -60,19 +60,10 @@
 							{# Mot de passe & (optionnel) Confirmation #}
 							<div class="col-12 col-md-6">
 								{{ form_row(registrationForm.plainPassword, { label: 'Mot de passe' }) }}
-							</div>
-							{# Si tu as un second champ (RepeatedType), dé-commente :
-														            <div class="col-12 col-md-6">
-														              {{ form_row(registrationForm.plainPasswordSecond, { label: 'Confirmer le mot de passe' }) }}
-														            </div>
-														            #}
+</div>
 
-							{# Photo (optionnel) #}
-							{% if registrationForm.photo is defined %}
-								<div class="col-12 col-md-6">
-									{{ form_row(registrationForm.photo, { label: 'Photo de profil' }) }}
-								</div>
-							{% endif %}
+
+							
 
 							{# CGU / Consentement #}
 							<div class="col-12">

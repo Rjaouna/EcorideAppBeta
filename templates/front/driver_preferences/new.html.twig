@@ -3,9 +3,10 @@
 {% block title %}New DriverPreferences{% endblock %}
 
 {% block body %}
-    <h1>Create new DriverPreferences</h1>
+<h5 class="my-3">vos préférences de conducteur</h5>
+
+
 
     {{ include('front/driver_preferences/_form.html.twig') }}
 
-    <a href="{{ path('app_driver_preferences_index') }}">back to list</a>
 {% endblock %}

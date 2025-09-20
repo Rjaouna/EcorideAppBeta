@@ -154,19 +154,19 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
 
-            // Photo de profil (upload non mappé)
-            ->add('photo', FileType::class, [
-                'label' => 'Photo de profil (JPEG/PNG, ≤ 2 Mo)',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new Image([
-                        'maxSize' => '2M',
-                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
-                        'mimeTypesMessage' => 'Formats autorisés : JPEG, PNG, WEBP.',
-                    ]),
-                ],
-            ])
+            // // Photo de profil (upload non mappé)
+            // ->add('photo', FileType::class, [
+            //     'label' => 'Photo de profil (JPEG/PNG, ≤ 2 Mo)',
+            //     'mapped' => false,
+            //     'required' => false,
+            //     'constraints' => [
+            //         new Image([
+            //             'maxSize' => '2M',
+            //             'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
+            //             'mimeTypesMessage' => 'Formats autorisés : JPEG, PNG, WEBP.',
+            //         ]),
+            //     ],
+            // ])
 
             // Mot de passe
             ->add('plainPassword', PasswordType::class, [

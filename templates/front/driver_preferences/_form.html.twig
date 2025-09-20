@@ -12,7 +12,9 @@
 		class="card-body">
 
 		{# ——— Fumeur autorisé ——— #}
-		<div class="mb-3">
+<div>
+
+
 			{{ form_label(form.smokingAllowed, 'Autoriser fumeur') }}
 			<div class="form-check form-switch">
 				{{ form_widget(form.smokingAllowed, { attr: { class: 'form-check-input' } }) }}
@@ -23,7 +25,9 @@
 		</div>
 
 		{# ——— Animaux autorisés ——— #}
-		<div class="mb-3">
+<div>
+
+
 			{{ form_label(form.petsAllowed, 'Autoriser animaux') }}
 			<div class="form-check form-switch">
 				{{ form_widget(form.petsAllowed, { attr: { class: 'form-check-input' } }) }}

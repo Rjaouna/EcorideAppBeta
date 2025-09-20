@@ -76,7 +76,6 @@ class UserType extends AbstractType
 
         ;
 
-        // Ajouter le mot de passe uniquement en mode création
         if ($options['mode'] === 'create') {
             $builder->add('imageFile', VichImageType::class, [
                 'label'         => 'Avatar',
@@ -92,6 +91,7 @@ class UserType extends AbstractType
                     ),
                 ],
             ]);
+            // Ajouter le mot de passe uniquement en mode création
             $builder->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
                 'mapped' => false, // sera hashé dans le contrôleur
