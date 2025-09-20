@@ -75,6 +75,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->vehicles = new ArrayCollection();
+        $this->carpoolings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -298,6 +299,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?int $imageSize = null;
 
+    /**
+     * @var Collection<int, Carpooling>
+     */
+    #[ORM\OneToMany(targetEntity: Carpooling::class, mappedBy: 'driver')]
+    private Collection $carpoolings;
+
 
     public function setImageFile(?File $imageFile): void
     {
@@ -325,5 +332,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImageSize(?int $imageSize): void
     {
         $this->imageSize = $imageSize;
+    }
+
+    /**
+     * @return Collection<int, Carpooling>
+     */
+    public function getCarpoolings(): Collection
+    {
+        return $this->carpoolings;
+    }
+
+    public function addCarpooling(Carpooling $carpooling): static
+    {
+        if (!$this->carpoolings->contains($carpooling)) {
+            $this->carpoolings->add($carpooling);
+            $carpooling->setDriver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCarpooling(Carpooling $carpooling): static
+    {
+        if ($this->carpoolings->removeElement($carpooling)) {
+            // set the owning side to null (unless already changed)
+            if ($carpooling->getDriver() === $this) {
+                $carpooling->setDriver(null);
+            }
+        }
+
+        return $this;
     }
 }
