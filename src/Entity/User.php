@@ -312,6 +312,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: 'passager')]
     private Collection $bookings;
 
+    #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
+    private ?Wallet $wallet = null;
+
 
     public function setImageFile(?File $imageFile): void
     {
@@ -397,6 +400,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $booking->setPassager(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWallet(): ?Wallet
+    {
+        return $this->wallet;
+    }
+
+    public function setWallet(?Wallet $wallet): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($wallet === null && $this->wallet !== null) {
+            $this->wallet->setOwner(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($wallet !== null && $wallet->getOwner() !== $this) {
+            $wallet->setOwner($this);
+        }
+
+        $this->wallet = $wallet;
 
         return $this;
     }
