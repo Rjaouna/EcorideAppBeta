@@ -4,7 +4,12 @@
 @use "./variables";
 
 // 2) Bootstrap (toutes les parties)
+@use "bootstrap/scss/bootstrap" as *; // nécessite le load-path
+/* + éventuel Bootswatch :
+@use "bootswatch/dist/lux/variables" as *;
 @use "bootstrap/scss/bootstrap" as *;
+@use "bootswatch/dist/lux/bootswatch" as *;
+*/
 
 // 3) Tes styles additionnels
 body {

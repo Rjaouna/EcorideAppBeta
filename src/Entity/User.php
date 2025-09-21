@@ -75,6 +75,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->vehicles = new ArrayCollection();
+        $this->carpoolings = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
+        $this->driverReviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -298,6 +301,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?int $imageSize = null;
 
+    /**
+     * @var Collection<int, Carpooling>
+     */
+    #[ORM\OneToMany(targetEntity: Carpooling::class, mappedBy: 'driver')]
+    private Collection $carpoolings;
+
+    /**
+     * @var Collection<int, Booking>
+     */
+    #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: 'passager')]
+    private Collection $bookings;
+
+    #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
+    private ?Wallet $wallet = null;
+
+    /**
+     * @var Collection<int, DriverReview>
+     */
+    #[ORM\OneToMany(targetEntity: DriverReview::class, mappedBy: 'rater')]
+    private Collection $driverReviews;
+
 
     public function setImageFile(?File $imageFile): void
     {
@@ -325,5 +349,117 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImageSize(?int $imageSize): void
     {
         $this->imageSize = $imageSize;
+    }
+
+    /**
+     * @return Collection<int, Carpooling>
+     */
+    public function getCarpoolings(): Collection
+    {
+        return $this->carpoolings;
+    }
+
+    public function addCarpooling(Carpooling $carpooling): static
+    {
+        if (!$this->carpoolings->contains($carpooling)) {
+            $this->carpoolings->add($carpooling);
+            $carpooling->setDriver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCarpooling(Carpooling $carpooling): static
+    {
+        if ($this->carpoolings->removeElement($carpooling)) {
+            // set the owning side to null (unless already changed)
+            if ($carpooling->getDriver() === $this) {
+                $carpooling->setDriver(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Booking>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): static
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+            $booking->setPassager($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): static
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getPassager() === $this) {
+                $booking->setPassager(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getWallet(): ?Wallet
+    {
+        return $this->wallet;
+    }
+
+    public function setWallet(?Wallet $wallet): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($wallet === null && $this->wallet !== null) {
+            $this->wallet->setOwner(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($wallet !== null && $wallet->getOwner() !== $this) {
+            $wallet->setOwner($this);
+        }
+
+        $this->wallet = $wallet;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DriverReview>
+     */
+    public function getDriverReviews(): Collection
+    {
+        return $this->driverReviews;
+    }
+
+    public function addDriverReview(DriverReview $driverReview): static
+    {
+        if (!$this->driverReviews->contains($driverReview)) {
+            $this->driverReviews->add($driverReview);
+            $driverReview->setRater($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDriverReview(DriverReview $driverReview): static
+    {
+        if ($this->driverReviews->removeElement($driverReview)) {
+            // set the owning side to null (unless already changed)
+            if ($driverReview->getRater() === $this) {
+                $driverReview->setRater(null);
+            }
+        }
+
+        return $this;
     }
 }
