@@ -4,7 +4,7 @@
 @use "./variables";
 
 // 2) Bootstrap (toutes les parties)
-@use "bootstrap/scss/bootstrap" as *;
+@use "bootstrap/scss/bootstrap";
 
 // 3) Tes styles additionnels
 body {
