@@ -1,5 +1,5 @@
 /* 1) Fonctions Bootstrap */
-@use "bootstrap/scss/functions";
+@use "bootstrap/scss/functions" as *;
 
 /* 2) Ta palette + variables */
 $primary:   #1db575;
