@@ -1,17 +1,42 @@
-// assets/styles/app.scss
+/* assets/styles/app.scss */
 
-// 1) Tes overrides AVANT Bootstrap
-@use "./variables";
+/* 1) Fonctions d'abord */
+@use "bootstrap/scss/functions";
 
-// 2) Bootstrap (toutes les parties)
-@use "bootstrap/scss/bootstrap" as *; // nécessite le load-path
-/* + éventuel Bootswatch :
-@use "bootswatch/dist/lux/variables" as *;
-@use "bootstrap/scss/bootstrap" as *;
-@use "bootswatch/dist/lux/bootswatch" as *;
-*/
+/* 2) Tes variables */
+$primary:   #1db575;
+$secondary: #444545;
+$success:   #22c55e;
+$info:      #0ea5e9;
+$warning:   #f59e0b;
+$danger:    #ef4444;
+$light:     #f8fafc;
+$dark:      #333333;
 
-// 3) Tes styles additionnels
-body {
-  font-family: 'Raleway', sans-serif; // tu peux aussi lier la police dans base.html.twig
-}
+$theme-colors: (
+  "primary":   $primary,
+  "secondary": $secondary,
+  "success":   $success,
+  "info":      $info,
+  "warning":   $warning,
+  "danger":    $danger,
+  "light":     $light,
+  "dark":      $dark
+);
+
+/* 3) Charger Bootstrap en lui passant tes overrides */
+@use "bootstrap/scss/bootstrap" with (
+  $primary:   $primary,
+  $secondary: $secondary,
+  $success:   $success,
+  $info:      $info,
+  $warning:   $warning,
+  $danger:    $danger,
+  $light:     $light,
+  $dark:      $dark,
+  $theme-colors: $theme-colors,
+
+);
+
+/* 4) Styles perso */
+body { font-family: 'Raleway', sans-serif; }

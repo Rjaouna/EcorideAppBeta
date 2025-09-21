@@ -1,2 +1,2 @@
-import "bootstrap"; // OK (JS seulement)
-import "../../public/assets/css/app.css"; // CSS compilé depuis SCSS
+// assets/js/app.js
+import "bootstrap"; // si tu utilises les composants JS de Bootstrap
