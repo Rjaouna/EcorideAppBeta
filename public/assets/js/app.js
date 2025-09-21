@@ -5163,13 +5163,6 @@
   };
   enableDismissTrigger(Toast);
   defineJQueryPlugin(Toast);
-
-  // assets/js/app.js
-  document.addEventListener("DOMContentLoaded", () => {
-    console.log("JS OK (esbuild)");
-    const triggers = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    [...triggers].forEach((el) => new bootstrap.Tooltip(el));
-  });
 })();
 /*! Bundled license information:
 
