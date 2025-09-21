@@ -30,7 +30,7 @@ $theme-colors: (
 );
 
 /* 3) Import du framework (doit venir APRÈS les variables) */
-@use "bootstrap/scss/bootstrap";
+@use "bootstrap/scss/bootstrap" as *; // nécessite le load-path
 
 /* 4) Petits tweaks (optionnels) */
 html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
