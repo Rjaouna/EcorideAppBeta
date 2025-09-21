@@ -12,7 +12,9 @@
 			class="row g-2 g-md-3 align-items-end">
 			<!-- Départ -->
 			<div class="col-12 col-md-3">
-				<label for="departureCity" class="form-label small text-muted mb-1" id="labelDepart">Départ</label>
+<label for="departureCity" class="form-label small text-muted mb-1 label-focus" id="labelDepart">Ville de départ</label>
+
+
 				<div class="input-group input-group-lg">
 					<span class="input-group-text rounded-start-pill icon-chip">
 						<i class="bi bi-flag-fill"></i>
@@ -23,14 +25,18 @@
 
 			<!-- Swap -->
 			<div class="col-12 col-md-auto d-flex justify-content-center">
-				<button type="button" id="swap" class="btn btn-ghost-eco btn-lg rounded-circle shadow-sm mt-1 mt-md-4" title="Permuter Départ / Arrivée" aria-label="Permuter villes" style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;">
+<button type="button" id="swap" class="btn btn-primary text-light btn-lg rounded-circle shadow-sm mt-1 mt-md-4" title="Permuter Départ / Arrivée" aria-label="Permuter villes" style="width:56px;height:56px;display:flex;align-items:center;justify-content:center;">
+
+
 					<i class="bi bi-arrow-left-right"></i>
 				</button>
 			</div>
 
 			<!-- Arrivée -->
 			<div class="col-12 col-md-3">
-				<label for="destinationCity" class="form-label small text-muted mb-1" id="labelArrivee">Arrivée</label>
+<label for="destinationCity" class="form-label small text-muted mb-1  label-focus" id="labelArrivee">Ville d'arrivée</label>
+
+
 				<div class="input-group input-group-lg">
 					<span class="input-group-text rounded-start-pill icon-chip">
 						<i class="bi bi-flag"></i>
@@ -43,7 +49,9 @@
 <div class="col-12 col-md-3">
 
 
-				<label for="travelDate" class="form-label small text-muted mb-1" id="labelDate">Date</label>
+<label for="travelDate" class="form-label small text-muted mb-1  label-focus" id="labelDate">Date de départ</label>
+
+
 				<div class="input-group input-group-lg">
 					<span class="input-group-text rounded-start-pill icon-chip">
 						<i class="bi bi-calendar-event"></i>
@@ -95,9 +103,9 @@
 
   // Textes par défaut
   const LBL_DEFAULT = {
-    dep: 'Départ',
-    arr: 'Arrivée',
-    dat: 'Date',
+    dep: 'Ville de départ',
+    arr: 'Ville D\'arrivée',
+    dat: 'Date de départ',
   };
 
   // Textes “aide” au focus
@@ -119,13 +127,16 @@
   }
 
   dep?.addEventListener('focus', () => focusLabel(lblDep, LBL_FOCUS.dep));
-  dep?.addEventListener('blur',  () => blurLabel(lblDep,  LBL_DEFAULT.dep));
+dep?.addEventListener('blur',  () => focusLabel(lblDep,  LBL_DEFAULT.dep));
+
 
   dest?.addEventListener('focus', () => focusLabel(lblArr, LBL_FOCUS.arr));
-  dest?.addEventListener('blur',  () => blurLabel(lblArr,  LBL_DEFAULT.arr));
+dest?.addEventListener('blur',  () => focusLabel(lblArr,  LBL_DEFAULT.arr));
+
 
   dateI?.addEventListener('focus', () => focusLabel(lblDat, LBL_FOCUS.dat));
-  dateI?.addEventListener('blur',  () => blurLabel(lblDat,  LBL_DEFAULT.dat));
+dateI?.addEventListener('blur',  () => focusLabel(lblDat,  LBL_DEFAULT.dat));
+
 
   // Swap Départ / Arrivée
   swap?.addEventListener('click', () => {
