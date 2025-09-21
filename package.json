@@ -5,14 +5,15 @@
     "sass": "^1.92.1"
   },
   "scripts": {
-    "watch:css": "sass assets/styles/app.scss public/assets/css/app.css --watch",
-    "watch:js": "esbuild assets/js/app.js --bundle --outfile=public/assets/js/app.js --sourcemap --watch",
-    "dev": "npm-run-all --parallel watch:css watch:js",
-    "build": "npm run build:css",
-    "build:css": "sass assets/styles/app.scss public/assets/css/app.css --style=compressed --load-path=node_modules",
-    "build:js": "vite build"
-    
-  },
+  "watch:css": "sass assets/styles/app.scss public/assets/css/app.css --watch --load-path=node_modules --style=expanded --quiet-deps",
+  "watch:js": "esbuild assets/js/app.js --bundle --outfile=public/assets/js/app.js --sourcemap --watch",
+  "dev": "npm-run-all --parallel watch:css watch:js",
+
+  "build:css": "sass assets/styles/app.scss public/assets/css/app.css --style=compressed --load-path=node_modules --quiet-deps",
+  "build:js": "esbuild assets/js/app.js --bundle --minify --outfile=public/assets/js/app.min.js",
+  "build": "npm run build:css && npm run build:js"
+}
+,
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "axios": "^1.12.2"
