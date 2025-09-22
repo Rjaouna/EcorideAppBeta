@@ -89,7 +89,13 @@ Passager
 						</div>
 						<div class="col-md-6">
 							<div class="small text-muted">Email</div>
-							<div class="fw-semibold">{{ profil.email ?? '—' }}</div>
+<div class="fw-semibold">{{ profil.email ?? '—' }}
+	{% if app.user and (app.user.isVerified is defined) and not app.user.isVerified %}
+		<span class="badge bg-warning text-dark ms-1 text-white" title="Adresse e-mail non vérifiée">Non vérifiée</span>
+	{% endif %}
+</div>
+
+
 						</div>
 
 

@@ -15,8 +15,11 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
+
 	<div
 		class="container">
+
+
 		{# Brand #}
 		<a class="navbar-brand d-flex align-items-center" href="{{ path('app_home') }}">
 			<img src="{{ asset('asset/images/logo.svg') }}" alt="Logo EcoRide" height="32" class="me-2">
@@ -216,5 +219,19 @@
 			</ul>
 		</div>
 	</div>
+
+
 </nav>
+
+
+{% if app.user and (app.user.isVerified is defined) and not app.user.isVerified %}
+	<div class="alert alert-warning text-center m-0 rounded-0 border-0 py-2 small">
+		<strong>Votre adresse e-mail n’est pas encore vérifiée.</strong>
+		Vérifiez votre boîte de réception (et vos spams).
+	</div>
+{% endif %}
+
+
+
+
 
