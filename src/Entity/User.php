@@ -322,6 +322,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: DriverReview::class, mappedBy: 'rater')]
     private Collection $driverReviews;
 
+    #[ORM\Column]
+    private ?bool $firstConnexion = null;
+
 
     public function setImageFile(?File $imageFile): void
     {
@@ -459,6 +462,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $driverReview->setRater(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isFirstConnexion(): ?bool
+    {
+        return $this->firstConnexion;
+    }
+
+    public function setFirstConnexion(bool $firstConnexion): static
+    {
+        $this->firstConnexion = $firstConnexion;
 
         return $this;
     }
