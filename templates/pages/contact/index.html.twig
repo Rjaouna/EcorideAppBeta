@@ -1,0 +1,101 @@
+{# contact.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact
+{% endblock %}
+
+{% block body %}
+	<section class="py-5">
+		<div class="container">
+			<div class="row justify-content-center mb-4">
+				<div class="col-12 col-md-10 col-lg-8">
+					<div class="text-center mb-4">
+						<h1 class="h3 mb-2">Contactez-nous</h1>
+						<p class="text-muted mb-0">Une question ? Écrivez-nous, on vous répond vite.</p>
+					</div>
+
+					{# Bloc coordonnées #}
+					<div class="card border-0 shadow-sm mb-4">
+						<div class="card-body p-3 p-md-4">
+							<div class="row g-3 g-md-4">
+								<div class="col-12 col-md-6">
+									<div class="d-flex align-items-start gap-3">
+										<span class="badge rounded-circle bg-primary-subtle text-primary-emphasis p-3">
+											<i class="bi bi-telephone fs-5"></i>
+										</span>
+										<div>
+											<div class="fw-semibold">Téléphone</div>
+											<a href="tel:+33123456789" class="link-underline link-underline-opacity-0">+33 1 23 45 67 89</a>
+											<div class="text-muted small">Lun–Ven, 9h–18h</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<div class="d-flex align-items-start gap-3">
+										<span class="badge rounded-circle bg-primary-subtle text-primary-emphasis p-3">
+											<i class="bi bi-envelope fs-5"></i>
+										</span>
+										<div>
+											<div class="fw-semibold">E-mail</div>
+											<a href="mailto:contact@votre-domaine.com" class="link-underline link-underline-opacity-0">
+												contact@votre-domaine.com
+											</a>
+											<div class="text-muted small">Réponse sous 24h ouvrées</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{# Formulaire #}
+					<div class="card border-0 shadow-sm">
+						<div class="card-body p-3 p-md-4">
+							<h2 class="h5 mb-3">Envoyez-nous un message</h2>
+
+							<form
+								method="post" action="#">
+								{# CSRF Symfony #}
+								<input type="hidden" name="_token" value="{{ csrf_token('contact') }}"/>
+
+								<div class="row g-3">
+									<div class="col-12 col-md-6">
+										<div class="form-floating">
+											<input type="text" class="form-control" id="contact_name" name="name" placeholder="Votre nom" required>
+											<label for="contact_name">Votre nom</label>
+										</div>
+									</div>
+
+									<div class="col-12 col-md-6">
+										<div class="form-floating">
+											<input type="email" class="form-control" id="contact_email" name="email" placeholder="nom@domaine.com" required>
+											<label for="contact_email">Votre e-mail</label>
+										</div>
+									</div>
+
+									<div class="col-12">
+										<div class="form-floating">
+											<textarea class="form-control" id="contact_message" name="message" placeholder="Votre message" style="height: 160px;" required></textarea>
+											<label for="contact_message">Votre message</label>
+										</div>
+									</div>
+
+									<div class="col-12">
+										<button type="submit" class="btn btn-primary text-white w-100">
+											<i class="bi bi-send me-1"></i>
+											Envoyer
+										</button>
+									</div>
+								</div>
+							</form>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
