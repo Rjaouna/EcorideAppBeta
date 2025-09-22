@@ -80,3 +80,27 @@ php -S 127.0.0.1:8000 -t public
 Commandes utiles
 # Viderle cache (prod)
 php bin/console cache:clear --env=prod
+
+
+------------------------------------------------------
+
+(Docker) -- Lancer le projet avec Docker
+Prérequis
+
+Docker Desktop
+	installé
+	Git installé
+
+
+Étapes d’installation
+
+1) Récupération du projet
+https://github.com/Rjaouna/EcorideAppBeta.git
+cd <EcorideAppBeta>
+
+2) Construire et démarrer les conteneurs
+
+docker compose up -d --build
+
+3) Accéder à l’application
+http://localhost:8080
