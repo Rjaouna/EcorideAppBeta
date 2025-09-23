@@ -24,17 +24,19 @@ final class DriverPreferencesController extends BaseController
     public function index(
         DriverPreferencesRepository $repo,
         VehicleRepository $vehicleRepo,
-        
+
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
         $vehicles = $vehicleRepo->findBy(['owner' => $user, 'active' => true]);
 
         // 1) Récupère ou crée la préférence de l'utilisateur
+        // Récupère ou crée les préférences
         $preferences = $repo->findOneBy(['user' => $user]);
+        $isNewPreferences = false;
         if (!$preferences) {
             $preferences = (new DriverPreferences())->setUser($user);
-            
+            $isNewPreferences = true;
         }
 
         // 2) Crée le formulaire
@@ -42,19 +44,53 @@ final class DriverPreferencesController extends BaseController
             // 'action' => $this->generateUrl('app_driver_preferences_update'), // si tu as une route de save
             'method' => 'POST',
         ]);
-       
+
+        $missingPrefs   = !$preferences || !$preferences->getId(); // ou ($isNewPreferences)
+        $missingVehicle = empty($vehicles);
+        $statusButton = null;
+
+        if ($missingPrefs && $missingVehicle) {
+            $message = sprintf(
+                'Pour utiliser le mode conducteur, vous devez d’abord définir vos préférences et ajouter un véhicule. '
+                    . '<a href="%s">Créer mes préférences</a> et <a href="%s">Ajouter un véhicule</a>.',
+                $this->generateUrl('app_driver_preferences_new'),
+                $this->generateUrl('app_vehicle_new')
+            );
+            $statusButton = 'disabled';
+        } elseif ($missingPrefs) {
+            $message = sprintf(
+                'Pour utiliser le mode conducteur, vous devez d’abord définir vos préférences. '
+                    . '<a href="%s">Créer mes préférences</a>.',
+                $this->generateUrl('app_driver_preferences_new')
+            );
+            $statusButton = 'disabled';
+        } elseif ($missingVehicle) {
+            $message = sprintf(
+                'Pour utiliser le mode conducteur, vous devez d’abord ajouter un véhicule. '
+                    . '<a href="%s">Ajouter un véhicule</a>.',
+                $this->generateUrl('app_vehicle_new')
+            );
+            $statusButton = 'disabled';
+        } else {
+            $message = 'Vous pouvez basculer entre les modes passager et conducteur.';
+            $statusButton = '';
+        }
+
+
 
         // 3) Rend la vue
         return $this->render('front/driver_preferences/index.html.twig', [
-            'driver_preference' => $preferences,   
+            'driver_preference' => $preferences,
             'form' => $form->createView(),
             'driverPreference' => $preferences,
             'vehicles' => $vehicles,
+            'message' => $message,
+            'statusButton' => $statusButton,
         ]);
     }
 
     #[Route('/switch', name: 'app_front_driver_preferences_switch_mode', methods: ['POST'])]
-    public function switch(Request $request, EntityManagerInterface $em, Security $security,DriverPreferencesRepository $preferences, VehicleRepository $vehicles): Response
+    public function switch(Request $request, EntityManagerInterface $em, Security $security, DriverPreferencesRepository $preferences, VehicleRepository $vehicles): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -157,7 +193,7 @@ final class DriverPreferencesController extends BaseController
     #[Route('/{id}', name: 'app_driver_preferences_delete', methods: ['POST'])]
     public function delete(Request $request, DriverPreferences $driverPreference, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$driverPreference->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $driverPreference->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($driverPreference);
             $entityManager->flush();
         }
