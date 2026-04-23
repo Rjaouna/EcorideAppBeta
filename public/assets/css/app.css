@@ -1,4 +1,8 @@
 @charset "UTF-8";
+/* assets/styles/app.scss */
+/* 1) Fonctions d'abord */
+/* 2) Tes variables */
+/* 3) Charger Bootstrap en lui passant tes overrides */
 /*!
  * Bootstrap  v5.3.8 (https://getbootstrap.com/)
  * Copyright 2011-2025 The Bootstrap Authors
@@ -11859,3 +11863,9 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+/* 4) Styles perso */
+body {
+  font-family: "Raleway", sans-serif;
+}
+
+/*# sourceMappingURL=app.css.map */

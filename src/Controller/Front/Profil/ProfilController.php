@@ -30,9 +30,13 @@ final class ProfilController extends BaseController
 
         ]);
     }
-    #[Route('/{id}/edit', name: 'app_profil_edit', methods: ['GET', 'POST'])]
+    #[Route('/front/profil/{id}/edit', name: 'app_profil_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        if ($this->getUser()?->getUserIdentifier() !== $user->getUserIdentifier()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez modifier que votre propre profil.');
+        }
+
         $form = $this->createForm(UserType::class, $user, ['mode' => 'edit']);
         $form->handleRequest($request);
 

@@ -167,7 +167,11 @@ final class DriverPreferencesController extends BaseController
     #[Route('/{id}', name: 'app_driver_preferences_show', methods: ['GET'])]
     public function show(DriverPreferences $driverPreference): Response
     {
-        return $this->render('driver_preferences/show.html.twig', [
+        if ($driverPreference->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez acceder qu a vos propres preferences.');
+        }
+
+        return $this->render('front/driver_preferences/show.html.twig', [
             'driver_preference' => $driverPreference,
         ]);
     }
@@ -175,6 +179,10 @@ final class DriverPreferencesController extends BaseController
     #[Route('/{id}/edit', name: 'app_driver_preferences_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, DriverPreferences $driverPreference, EntityManagerInterface $entityManager): Response
     {
+        if ($driverPreference->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres preferences.');
+        }
+
         $form = $this->createForm(DriverPreferencesType::class, $driverPreference);
         $form->handleRequest($request);
 
@@ -193,6 +201,10 @@ final class DriverPreferencesController extends BaseController
     #[Route('/{id}', name: 'app_driver_preferences_delete', methods: ['POST'])]
     public function delete(Request $request, DriverPreferences $driverPreference, EntityManagerInterface $entityManager): Response
     {
+        if ($driverPreference->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException('Vous ne pouvez supprimer que vos propres preferences.');
+        }
+
         if ($this->isCsrfTokenValid('delete' . $driverPreference->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($driverPreference);
             $entityManager->flush();
