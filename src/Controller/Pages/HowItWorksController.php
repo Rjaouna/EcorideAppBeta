@@ -15,4 +15,10 @@ final class HowItWorksController extends AbstractController
             'controller_name' => 'HowItWorksController',
         ]);
     }
+
+    #[Route('/pages/mentions-legales', name: 'app_legal_notice')]
+    public function legalNotice(): Response
+    {
+        return $this->render('pages/legal_notice/index.html.twig');
+    }
 }

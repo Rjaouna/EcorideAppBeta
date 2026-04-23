@@ -3,9 +3,11 @@
 namespace App\Controller\Front;
 
 use App\Controller\Base\BaseController;
+use App\Entity\Booking;
 use App\Entity\Carpooling;
 use App\Entity\User;
 use App\Form\CarpoolingType;
+use App\Repository\BookingRepository;
 use App\Repository\CarpoolingRepository;
 use App\Repository\DriverPreferencesRepository;
 use App\Repository\VehicleRepository;
@@ -102,6 +104,90 @@ final class CarpoolingController extends BaseController
 
         return $this->render('front/carpooling/new.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/covoiturages/{id}', name: 'app_carpooling_show', methods: ['GET'])]
+    public function show(Carpooling $trip, BookingRepository $bookingRepository): Response
+    {
+        $existingBooking = false;
+        $canParticipate = false;
+
+        /** @var User|null $user */
+        $user = $this->getUser();
+
+        if ($user instanceof User) {
+            $existingBooking = $bookingRepository->hasPassengerBooking($trip->getId(), $user->getId());
+            $canParticipate = $trip->getDriver() !== $user && $trip->getSeatsAvailable() > 0 && !$existingBooking;
+        }
+
+        return $this->render('front/carpooling/show.html.twig', [
+            'trip' => $trip,
+            'existingBooking' => $existingBooking,
+            'canParticipate' => $canParticipate,
+        ]);
+    }
+
+    #[Route('/covoiturages/{id}/participer', name: 'app_carpooling_participate', methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function participate(
+        Request $request,
+        Carpooling $trip,
+        BookingRepository $bookingRepository,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        if (!$this->isCsrfTokenValid('participate_trip_'.$trip->getId(), (string) $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException('Jeton invalide.');
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($trip->getDriver() === $user) {
+            $this->addFlash('warning', 'Tu ne peux pas participer a ton propre covoiturage.');
+
+            return $this->redirectToRoute('app_carpooling_show', ['id' => $trip->getId()]);
+        }
+
+        if ($bookingRepository->hasPassengerBooking($trip->getId(), $user->getId())) {
+            $this->addFlash('info', 'Tu participes deja a ce covoiturage.');
+
+            return $this->redirectToRoute('app_carpooling_show', ['id' => $trip->getId()]);
+        }
+
+        if ($trip->getSeatsAvailable() <= 0) {
+            $this->addFlash('warning', 'Il n y a plus de place disponible pour ce covoiturage.');
+
+            return $this->redirectToRoute('app_carpooling_show', ['id' => $trip->getId()]);
+        }
+
+        $booking = (new Booking())
+            ->setTrip($trip)
+            ->setPassager($user)
+            ->setStatus('confirme');
+
+        $trip->setSeatsAvailable($trip->getSeatsAvailable() - 1);
+
+        $entityManager->persist($booking);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Ta participation au covoiturage a bien ete enregistree.');
+
+        return $this->redirectToRoute('app_carpooling_show', ['id' => $trip->getId()]);
+    }
+
+    #[Route('/mes-covoiturages', name: 'app_my_carpoolings', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function myCarpoolings(
+        CarpoolingRepository $carpoolingRepository,
+        BookingRepository $bookingRepository,
+    ): Response {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return $this->render('front/carpooling/my_carpoolings.html.twig', [
+            'publishedTrips' => $carpoolingRepository->findDriverTrips($user),
+            'bookings' => $bookingRepository->findPassengerBookings($user),
         ]);
     }
 }

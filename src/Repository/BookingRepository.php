@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Booking;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +17,33 @@ class BookingRepository extends ServiceEntityRepository
         parent::__construct($registry, Booking::class);
     }
 
-//    /**
-//     * @return Booking[] Returns an array of Booking objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function hasPassengerBooking(int $tripId, int $passengerId): bool
+    {
+        return null !== $this->createQueryBuilder('b')
+            ->select('b.id')
+            ->andWhere('b.trip = :trip')
+            ->andWhere('b.passager = :passenger')
+            ->setParameter('trip', $tripId)
+            ->setParameter('passenger', $passengerId)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
-//    public function findOneBySomeField($value): ?Booking
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @return Booking[]
+     */
+    public function findPassengerBookings(User $user): array
+    {
+        return $this->createQueryBuilder('b')
+            ->addSelect('trip', 'driver', 'vehicle')
+            ->join('b.trip', 'trip')
+            ->join('trip.driver', 'driver')
+            ->join('trip.vehicle', 'vehicle')
+            ->andWhere('b.passager = :user')
+            ->setParameter('user', $user)
+            ->orderBy('trip.departureAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

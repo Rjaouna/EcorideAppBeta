@@ -61,15 +61,18 @@
 				class="navbar-nav ms-auto align-items-lg-center">
 
 				{# Bouton Publier un trajet (hors dropdown) #}
-				<li class="nav-item ms-md-2">
-				
+				{% set canPublishTrip = app.user is null or 'ROLE_DRIVER' in app.user.roles %}
+				{% if canPublishTrip %}
+					<li class="nav-item ms-md-2">
+					
 <a href="{{ app.user ? path('app_carpooling_new') : path('app_login') }}" class="fw-semibold rounded-pill d-flex align-items-center">
 
 
-							<i class="bi bi-plus-circle me-2"></i>
-							Publier un trajet
-						</a>
-				</li>
+								<i class="bi bi-plus-circle me-2"></i>
+								Publier un trajet
+							</a>
+					</li>
+				{% endif %}
 
 				{# Wallet (si connecté) #}
 				{% if app.user %}
@@ -181,14 +184,12 @@
 								Mes préférences
 							</a>
 
-							{% if isDriver %}
-<a class="dropdown-item" href="#">
+<a class="dropdown-item" href="{{ path('app_my_carpoolings') }}">
 
 
-									<i class="bi bi-calendar2-event me-2"></i>
-									Mes covoiturages
-								</a>
-							{% endif %}
+								<i class="bi bi-calendar2-event me-2"></i>
+								Mes covoiturages
+							</a>
 
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item text-danger" href="{{ path('app_logout') }}">

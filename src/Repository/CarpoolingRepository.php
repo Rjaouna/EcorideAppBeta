@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Carpooling;
+use App\Entity\User;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -55,6 +56,21 @@ class CarpoolingRepository extends ServiceEntityRepository
 
         return $qb
             ->setMaxResults(24)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Carpooling[]
+     */
+    public function findDriverTrips(User $user): array
+    {
+        return $this->createQueryBuilder('c')
+            ->addSelect('vehicle')
+            ->join('c.vehicle', 'vehicle')
+            ->andWhere('c.driver = :user')
+            ->setParameter('user', $user)
+            ->orderBy('c.departureAt', 'DESC')
             ->getQuery()
             ->getResult();
     }
