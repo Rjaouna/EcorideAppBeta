@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Publier un trajet{% endblock %}
+
+{% block body %}
+	<div class="container py-4">
+		<div class="row justify-content-center">
+			<div class="col-12 col-lg-9">
+				<div class="mb-3">
+					<h1 class="h3 mb-1 text-secondary">Publier un trajet</h1>
+					<p class="text-muted mb-0">Renseigne ton depart, ton arrivee, ton vehicule et le nombre de places proposees.</p>
+				</div>
+
+				<div class="card border-0 shadow-sm rounded-4">
+					<div class="card-body p-4">
+						{{ form_start(form) }}
+							<div class="row g-3">
+								<div class="col-12 col-md-6">
+									{{ form_row(form.originCity) }}
+								</div>
+								<div class="col-12 col-md-6">
+									{{ form_row(form.destinationCity) }}
+								</div>
+								<div class="col-12 col-md-6">
+									{{ form_row(form.departureAt) }}
+								</div>
+								<div class="col-12 col-md-6">
+									{{ form_row(form.arrivalAt) }}
+								</div>
+								<div class="col-12">
+									{{ form_row(form.vehicle) }}
+								</div>
+								<div class="col-12 col-md-6">
+									{{ form_row(form.seatsAvailable) }}
+								</div>
+								<div class="col-12 col-md-6">
+									{{ form_row(form.priceCredits) }}
+								</div>
+							</div>
+
+							<div class="d-flex gap-2 mt-4">
+								<a href="{{ path('app_carpooling_search') }}" class="btn btn-outline-secondary">Annuler</a>
+								<button type="submit" class="btn btn-primary text-white">Publier mon trajet</button>
+							</div>
+						{{ form_end(form) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

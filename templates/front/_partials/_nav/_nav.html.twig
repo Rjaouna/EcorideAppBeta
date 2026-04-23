@@ -63,7 +63,7 @@
 				{# Bouton Publier un trajet (hors dropdown) #}
 				<li class="nav-item ms-md-2">
 				
-<a href="{{ path('app_login') }}" class="fw-semibold rounded-pill d-flex align-items-center">
+<a href="{{ app.user ? path('app_carpooling_new') : path('app_login') }}" class="fw-semibold rounded-pill d-flex align-items-center">
 
 
 							<i class="bi bi-plus-circle me-2"></i>
